@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL || 'onlyhouse@gmail.com';
 const RESEND_FROM_EMAIL =
   process.env.RESEND_FROM_EMAIL || 'Portfolio Contact <onboarding@resend.dev>';
@@ -21,13 +19,6 @@ function isValidEmail(email) {
 }
 
 export async function POST(request) {
-  if (!process.env.RESEND_API_KEY) {
-    return NextResponse.json(
-      { error: 'Email service is not configured.' },
-      { status: 500 }
-    );
-  }
-
   let payload;
 
   try {
@@ -59,6 +50,15 @@ export async function POST(request) {
   const safeEmail = escapeHtml(email);
   const safeSubject = escapeHtml(subject);
   const safeMessage = escapeHtml(message).replaceAll('\n', '<br />');
+
+  if (!process.env.RESEND_API_KEY) {
+    return NextResponse.json(
+      { error: 'Email service is not configured.' },
+      { status: 500 }
+    );
+  }
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
   const { error } = await resend.emails.send({
     from: RESEND_FROM_EMAIL,
