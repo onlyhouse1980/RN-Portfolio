@@ -13,11 +13,11 @@ const SKILLS = [
 
 const TECH = [
   'Next.js', 'React', 'TypeScript', 'Node.js',
-  'PostgreSQL', 'MongoDB', 'Redis', 'GraphQL',
+  'PostgreSQL', 'MongoDB', 'Redis',
   'Docker', 'AWS', 'Vercel', 'Git',
   'Tailwind', 'GSAP', 'Prisma', 'Stripe',
-  'REST APIs', 'WebSockets', 'CI/CD', 'Jest',
-  'React Native', 'Framer Motion', 'Three.js', 'Figma',
+  'REST APIs', 'WebSockets',
+  'React Native', 'Framer Motion', 'Three.js', 'WebGL',
 ];
 
 export default function Skills() {

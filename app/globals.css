@@ -796,7 +796,8 @@ body {
 }
 
 .contact__info-item {
-  display: flex;
+  /* display: flex; */
+  display: none;
   flex-direction: column;
   gap: 0.4rem;
   border-bottom: 1px solid var(--gray-dim);
