@@ -3,7 +3,7 @@ import { Resend } from 'resend';
 
 const CONTACT_TO_EMAIL = process.env.CONTACT_TO_EMAIL || 'onlyhouse@gmail.com';
 const RESEND_FROM_EMAIL =
-  process.env.RESEND_FROM_EMAIL || 'Portfolio Contact <onboarding@resend.dev>';
+  process.env.RESEND_FROM_EMAIL || 'Portfolio Contact <admin@kanzlei-intake-suite.online>';
 
 function escapeHtml(value) {
   return value
