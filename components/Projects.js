@@ -7,7 +7,7 @@ export const PROJECTS = [
   {
     num: '01',
     title: 'Instructional\nRef. App',
-    tags: ['Next.js', 'Stripe', 'Postgres'],
+    tags: ['Next.js', 'Rest API', 'Claude AI'],
     desc: 'Full-stack e-commerce with real-time inventory, checkout flows, and admin dashboard.',
     year: '2026',
     link: 'https://bartender-blue.vercel.app',
@@ -16,7 +16,7 @@ export const PROJECTS = [
   {
     num: '02',
     title: 'Full Stack\nUtilities Site',
-    tags: ['React', 'D3.js', 'Node'],
+    tags: ['Next.Js', 'MongoDB', 'Node'],
     desc: 'Analytics platform with live data visualization for 10k+ concurrent users.',
     year: '2026',
     link: 'https://obcg.org',
@@ -34,7 +34,7 @@ export const PROJECTS = [
   {
     num: '04',
     title: 'SAAS\nDashboard',
-    tags: ['React Native', 'GraphQL', 'AWS'],
+    tags: ['Next.Js', 'Supabase', 'Resend'],
     desc: 'Cross-platform mobile social app with 50k+ downloads and real-time messaging.',
     year: '2025',
     link: 'https://saas-boilerplate-xi-rose.vercel.app',
@@ -81,6 +81,25 @@ export const PROJECTS = [
 
 function ProjectCard({ project, index }) {
   const cardRef = useRef(null);
+  const previewRef = useRef(null);
+  const iframeRef = useRef(null);
+
+  useEffect(() => {
+    const preview = previewRef.current;
+    const iframe = iframeRef.current;
+    if (!preview || !iframe) return;
+
+    const updateScale = () => {
+      if (!preview.offsetWidth) return;
+      const scale = preview.offsetWidth / 1280;
+      iframe.style.transform = `scale(${scale})`;
+    };
+
+    updateScale();
+    const ro = new ResizeObserver(updateScale);
+    ro.observe(preview);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     const init = async () => {
@@ -149,11 +168,7 @@ function ProjectCard({ project, index }) {
 
   return (
     <div className="project-card" ref={cardRef} style={{ opacity: 0 }}>
-      <div className="project-card__bg">
-        <div className="project-card__preview">
-          <span style={{ fontSize: '5rem', opacity: 0.15 }}>{project.icon}</span>
-        </div>
-      </div>
+      <div className="project-card__bg" />
       <div className="project-card__lines" />
       <div className="project-card__overlay">
         <span className="project-card__num">{project.num} — {project.year}</span>
@@ -174,6 +189,19 @@ function ProjectCard({ project, index }) {
             ↗
           </a>
         </div>
+      </div>
+      <div className="project-card__preview" ref={previewRef}>
+        <span className="project-card__preview-fallback">{project.icon}</span>
+        <iframe
+          ref={iframeRef}
+          src={project.link}
+          className="project-card__iframe"
+          title={`Preview of ${project.title}`}
+          loading="lazy"
+          tabIndex={-1}
+          sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+          onLoad={(e) => e.currentTarget.classList.add('loaded')}
+        />
       </div>
     </div>
   );

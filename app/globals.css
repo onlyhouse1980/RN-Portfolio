@@ -471,23 +471,57 @@ body {
 .project-card__bg {
   position: absolute;
   inset: 0;
+  z-index: 0;
   transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .project-card:hover .project-card__bg { transform: scale(1.05); }
 
 .project-card__preview {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-size: 6rem;
-  color: rgba(255,255,255,0.05);
-  letter-spacing: 0.1em;
-  position: relative;
+  position: absolute;
+  top: 5%;
+  right: 4%;
+  width: 72%;
+  height: 0;
+  padding-bottom: 40.5%; /* 72% x 9/16 keeps the iframe preview at 16:9 */
   overflow: hidden;
+  z-index: 99;
+  border-radius: 3px;
+  background: #0d0d0d;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.07);
+  transition: box-shadow 0.4s ease;
+}
+
+.project-card:hover .project-card__preview {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.8), 0 0 0 1px rgba(180,255,0,0.25);
+}
+
+.project-card__preview-fallback {
+  font-size: 2.5rem;
+  opacity: 0.2;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+.project-card__iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1280px;
+  height: 720px;
+  transform-origin: top left;
+  border: none;
+  pointer-events: auto;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.project-card__iframe.loaded {
+  opacity: 1;
 }
 
 /* Unique visual for each card */
@@ -501,6 +535,8 @@ body {
 .project-card__overlay {
   position: absolute;
   inset: 0;
+  z-index: 2;
+  pointer-events: none;
   background: rgba(6, 6, 6, 0.7);
   display: flex;
   flex-direction: column;
@@ -561,6 +597,7 @@ body {
   margin-left: auto;
   width: 36px;
   height: 36px;
+  pointer-events: auto;
   border: 1px solid var(--white);
   border-radius: 50%;
   display: flex;
@@ -580,6 +617,7 @@ body {
 .project-card__lines {
   position: absolute;
   inset: 0;
+  z-index: 3;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.4s;
