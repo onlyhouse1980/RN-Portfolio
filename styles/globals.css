@@ -1072,24 +1072,6 @@ body {
 
 .footer__copy span { color: var(--lime); }
 
-.footer__links {
-  display: flex;
-  gap: 2rem;
-  list-style: none;
-}
-
-.footer__links a {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--gray);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.footer__links a:hover { color: var(--lime); }
-
 /* ===== SPLIT TEXT ===== */
 .char { display: inline-block; }
 

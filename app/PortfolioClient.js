@@ -77,12 +77,6 @@ export default function PortfolioClient() {
         <p className="footer__copy">
           © 2025 <span>RYAN.NYBERG</span> — Built with Next.js &amp; GSAP
         </p>
-        <ul className="footer__links">
-          <li><a href="https://github.com" target="_blank" rel="noreferrer">GitHub</a></li>
-          <li><a href="https://linkedin.com" target="_blank" rel="noreferrer">LinkedIn</a></li>
-          <li><a href="https://twitter.com" target="_blank" rel="noreferrer">Twitter</a></li>
-          <li><a href="/resume.pdf" target="_blank" rel="noreferrer">Résumé</a></li>
-        </ul>
       </footer>
     </>
   );
