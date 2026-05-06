@@ -1130,6 +1130,10 @@ body {
   .about__inner { grid-template-columns: 1fr; gap: 4rem; }
   .projects__grid { grid-template-columns: 1fr; padding: 0 1.5rem; }
   .project-card:nth-child(odd) { margin-top: 0; }
+  .project-card__overlay { padding: 1.25rem 1.25rem 5px; }
+  .project-card__num { margin-bottom: 0.25rem; }
+  .project-card__title { margin-bottom: 0; }
+  .project-card__meta { display: none; }
   .skills { padding: 6rem 1.5rem; }
   .skills__inner { grid-template-columns: 1fr; gap: 4rem; }
   .contact { padding: 6rem 1.5rem; }
