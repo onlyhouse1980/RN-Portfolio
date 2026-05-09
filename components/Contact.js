@@ -152,8 +152,8 @@ export default function Contact() {
             </div>
             <div className="contact__info-item">
               <label>LinkedIn</label>
-              <a href="https://linkedin.com/in/yourprofile" target="_blank" rel="noreferrer">
-                linkedin.com/in/yourprofile
+              <a href="https://linkedin.com/in/ryan-nyberg" target="_blank" rel="noreferrer">
+                linkedin.com/in/ryan-nyberg
               </a>
             </div>
             <div className="contact__info-item">

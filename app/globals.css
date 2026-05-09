@@ -506,6 +506,22 @@ body {
   z-index: 0;
 }
 
+.project-card__preview-image {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.project-card__preview-image--hidden {
+  opacity: 0;
+}
+
 .project-card__iframe {
   position: absolute;
   top: 0;
@@ -518,6 +534,10 @@ body {
   z-index: 1;
   opacity: 0;
   transition: opacity 0.5s ease;
+}
+
+.project-card__iframe--fallback {
+  pointer-events: none;
 }
 
 .project-card__iframe.loaded {
@@ -834,8 +854,7 @@ body {
 }
 
 .contact__info-item {
-  /* display: flex; */
-  display: none;
+  display: flex;
   flex-direction: column;
   gap: 0.4rem;
   border-bottom: 1px solid var(--gray-dim);
