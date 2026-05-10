@@ -89,6 +89,44 @@ export const PROJECTS = [
 
 function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
   const cardRef = useRef(null);
+  const innerRef = useRef(null);
+  const backRef = useRef(null);
+  const hasMeasuredRef = useRef(false);
+
+  useEffect(() => {
+    const card = cardRef.current;
+    const inner = innerRef.current;
+    const back = backRef.current;
+    if (!card || !inner || !back) return;
+
+    const apply = () => {
+      const isMobile = window.matchMedia('(max-width: 900px)').matches;
+      if (!isMobile) {
+        inner.style.height = '';
+        hasMeasuredRef.current = false;
+        return;
+      }
+      const cardWidth = card.offsetWidth;
+      const frontHeight = (cardWidth * 3) / 4;
+      const target = isFlipped ? back.scrollHeight : frontHeight;
+
+      if (!hasMeasuredRef.current) {
+        // First mobile measurement: skip the transition so the card doesn't
+        // animate from 0 to its starting height on mount.
+        inner.style.transition = 'none';
+        inner.style.height = `${target}px`;
+        void inner.offsetHeight;
+        inner.style.transition = '';
+        hasMeasuredRef.current = true;
+      } else {
+        inner.style.height = `${target}px`;
+      }
+    };
+
+    apply();
+    window.addEventListener('resize', apply);
+    return () => window.removeEventListener('resize', apply);
+  }, [isFlipped]);
 
   useEffect(() => {
     const init = async () => {
@@ -157,7 +195,7 @@ function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
       onPointerLeave={handlePointerLeave}
       onClick={handleCardClick}
     >
-      <div className="project-card__inner">
+      <div className="project-card__inner" ref={innerRef}>
         <div className="project-card__face project-card__face--front">
           <div className="project-card__lines" />
           <div className="project-card__overlay">
@@ -192,7 +230,7 @@ function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
             />
           </div>
         </div>
-        <div className="project-card__face project-card__face--back">
+        <div className="project-card__face project-card__face--back" ref={backRef}>
           <span className="project-card__num">{project.num} — {project.year}</span>
           <h3 className="project-card__back-title">
             {project.title.split('\n').map((line, i) => (
