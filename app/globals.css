@@ -272,7 +272,7 @@ body {
   font-family: var(--font-condensed);
   font-size: clamp(1rem, 2vw, 1.4rem);
   font-weight: 300;
-  color: var(--gray);
+  color: var(--white);
   max-width: 400px;
   line-height: 1.6;
   letter-spacing: 0.05em;
@@ -1227,13 +1227,21 @@ body {
 /* ===== RESPONSIVE ===== */
 @media (max-width: 900px) {
   .navbar {
-    padding: 1.2rem 1.25rem;
-    padding-right: max(1.25rem, env(safe-area-inset-right));
+    padding: 1.2rem 1rem;
+    padding-right: max(1rem, env(safe-area-inset-right));
     gap: 1rem;
+  }
+  .navbar__logo {
+    font-size: 1.3rem;
+    flex-shrink: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .navbar__toggle {
     display: block;
     margin-left: auto;
+    flex-shrink: 0;
   }
   .navbar__links {
     position: fixed;
@@ -1241,6 +1249,7 @@ body {
     right: 0;
     height: 100vh;
     width: min(78vw, 320px);
+    max-width: 100vw;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
@@ -1250,13 +1259,18 @@ body {
     background: rgba(6, 6, 6, 0.97);
     backdrop-filter: blur(20px);
     border-left: 1px solid rgba(255, 255, 255, 0.08);
-    transform: translateX(100%);
-    transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.65, 0, 0.35, 1), visibility 0s linear 0.3s;
     pointer-events: none;
   }
   .navbar--open .navbar__links {
+    visibility: visible;
+    opacity: 1;
     transform: translateX(0);
     pointer-events: auto;
+    transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.65, 0, 0.35, 1), visibility 0s;
   }
   .navbar__links a { font-size: 0.9rem; }
   .hero { padding: 4rem 1.5rem 3rem; }
