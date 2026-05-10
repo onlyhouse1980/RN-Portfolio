@@ -105,8 +105,21 @@ function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
       const cardWidth = card.offsetWidth;
       const frontHeight = (cardWidth * 3) / 4;
       const target = isFlipped ? back.scrollHeight : frontHeight;
-      console.log('[card]', project.num, { isFlipped, cardWidth, frontHeight, backScrollHeight: back.scrollHeight, target, prev: card.style.height });
+      const cs = getComputedStyle(card);
+      console.log('[card]', project.num, {
+        isFlipped,
+        target,
+        prevInline: card.style.height,
+        prevComputed: cs.height,
+        transition: cs.transition,
+      });
       card.style.height = `${target}px`;
+      requestAnimationFrame(() => {
+        console.log('[card-after]', project.num, {
+          inline: card.style.height,
+          computed: getComputedStyle(card).height,
+        });
+      });
     };
 
     apply();
