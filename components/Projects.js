@@ -85,6 +85,16 @@ export const PROJECTS = [
     icon: '🔗',
     fallbackImage: '/lifestory.png',
   },
+  {
+    num: '09',
+    title: 'TSLearn\nTypescript',
+    tags: ['Typescript', 'Three.js', 'WebGL'],
+    desc: 'Next Js Typescript learning resource. I built a comprehensive learning platform for TypeScript, featuring interactive coding challenges, real-time feedback, and a dynamic curriculum that adapts to the user\'s progress. The site includes a custom-built code editor with integrated TypeScript support, allowing users to practice and apply their skills in a hands-on environment. The graphics and animations are powered by Three.js, and WebGL, creating an engaging and visually appealing learning experience that makes mastering TypeScript both fun and effective.',
+    year: '2026',
+    link: 'https://ts-learn-lac.vercel.app/',
+    icon: '🔗',
+    fallbackImage: '/tslearn.png',
+  },
 ];
 // ─────────────────────────────────────────────────────────────────────────────
 
