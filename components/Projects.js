@@ -87,8 +87,9 @@ export const PROJECTS = [
 ];
 // ─────────────────────────────────────────────────────────────────────────────
 
-function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
+function ProjectCard({ project, index }) {
   const cardRef = useRef(null);
+  const [isFlipped, setIsFlipped] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -122,10 +123,22 @@ function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
     init();
   }, [index]);
 
-  const handleCardClick = () => {
-    if (typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches) {
-      setFlippedNum((prev) => (prev === project.num ? null : project.num));
+  const handleCardClick = (e) => {
+    if (e.pointerType !== undefined && e.pointerType !== 'mouse') {
+      setIsFlipped((v) => !v);
+      return;
     }
+    if (typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches) {
+      setIsFlipped((v) => !v);
+    }
+  };
+
+  const handlePointerEnter = (e) => {
+    if (e.pointerType === 'mouse') setIsFlipped(true);
+  };
+
+  const handlePointerLeave = (e) => {
+    if (e.pointerType === 'mouse') setIsFlipped(false);
   };
 
   const stopPropagation = (e) => e.stopPropagation();
@@ -135,8 +148,8 @@ function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
       className={`project-card${isFlipped ? ' project-card--flipped' : ''}`}
       ref={cardRef}
       style={{ opacity: 0 }}
-      onMouseEnter={() => setFlippedNum(project.num)}
-      onMouseLeave={() => setFlippedNum((prev) => (prev === project.num ? null : prev))}
+      onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
       onClick={handleCardClick}
     >
       <div className="project-card__inner">
@@ -207,7 +220,6 @@ function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
 
 export default function Projects() {
   const headerRef = useRef(null);
-  const [flippedNum, setFlippedNum] = useState(null);
 
   useEffect(() => {
     const init = async () => {
@@ -247,13 +259,7 @@ export default function Projects() {
 
       <div className="projects__grid">
         {PROJECTS.map((project, i) => (
-          <ProjectCard
-            key={project.num}
-            project={project}
-            index={i}
-            isFlipped={flippedNum === project.num}
-            setFlippedNum={setFlippedNum}
-          />
+          <ProjectCard key={project.num} project={project} index={i} />
         ))}
       </div>
     </section>
