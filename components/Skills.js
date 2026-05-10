@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useLang } from '../lib/i18n';
 
 const SKILLS = [
   { name: 'React / Next.js', pct: 95 },
@@ -25,6 +26,7 @@ export default function Skills() {
   const barsRef = useRef(null);
   const techRef = useRef(null);
   const headingRef = useRef(null);
+  const { t } = useLang();
 
   useEffect(() => {
     const init = async () => {
@@ -111,10 +113,10 @@ export default function Skills() {
         {/* Left: skill bars */}
         <div>
           <div ref={headingRef} style={{ opacity: 0 }}>
-            <p className="skills__label">Expertise</p>
+            <p className="skills__label">{t.skills.label}</p>
             <h2 className="skills__heading">
-              My<br />
-              <span style={{ color: 'var(--lime)' }}>Stack</span>
+              {t.skills.heading[0]}<br />
+              <span style={{ color: 'var(--lime)' }}>{t.skills.heading[1]}</span>
             </h2>
           </div>
           <div className="skills__list" ref={barsRef}>
@@ -155,7 +157,7 @@ export default function Skills() {
               }
             }}
           >
-            Technologies
+            {t.skills.techLabel}
           </p>
           <div className="skills__tech-grid" ref={techRef}>
             {TECH.map((t) => (

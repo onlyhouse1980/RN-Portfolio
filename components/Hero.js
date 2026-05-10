@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useLang } from '../lib/i18n';
 
 // Particle system for background
 function ParticleCanvas() {
@@ -93,6 +94,7 @@ export default function Hero() {
   const subtitleRef = useRef(null);
   const scrollRef = useRef(null);
   const numberRef = useRef(null);
+  const { t } = useLang();
 
   useEffect(() => {
     let gsap, ScrollTrigger;
@@ -160,28 +162,27 @@ export default function Hero() {
       <div className="hero__number" ref={numberRef} aria-hidden="true">01</div>
 
       <div className="hero__content" ref={titleRef}>
-        <p className="hero__tag">Available for work — 2026</p>
+        <p className="hero__tag">{t.hero.tag}</p>
 
         <h1 className="hero__title">
           <span className="hero__title-line">
-            <span className="hero__title-inner">FULL</span>
+            <span className="hero__title-inner">{t.hero.title[0]}</span>
           </span>
           <span className="hero__title-line">
-            <span className="hero__title-inner accent">STACK</span>
+            <span className="hero__title-inner accent">{t.hero.title[1]}</span>
           </span>
           <span className="hero__title-line">
-            <span className="hero__title-inner">DEV</span>
+            <span className="hero__title-inner">{t.hero.title[2]}</span>
           </span>
         </h1>
 
         <div className="hero__bottom">
           <p className="hero__subtitle" ref={subtitleRef} style={{ transform: 'translateY(20px)' }}>
-            I build fast, scalable, and visually striking digital experiences using
-            Next.js, React, and modern web technologies.
+            {t.hero.subtitle}
           </p>
 
           <div className="hero__scroll-indicator" ref={scrollRef}>
-            <span>Scroll</span>
+            <span>{t.hero.scroll}</span>
             <div className="hero__scroll-line" />
           </div>
         </div>

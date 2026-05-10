@@ -1,12 +1,14 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useLang } from '../lib/i18n';
 
 export default function Contact() {
   const sectionRef = useRef(null);
   const bigTextRef = useRef(null);
   const splitRef = useRef(null);
   const dialogRef = useRef(null);
+  const { t } = useLang();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -105,15 +107,15 @@ export default function Contact() {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || 'The message could not be sent.');
+        throw new Error(result.error || t.contact.modal.errorDefault);
       }
 
       setFormStatus('success');
-      setFormMessage('Message sent. I will get back to you soon.');
+      setFormMessage(t.contact.modal.success);
       setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (error) {
       setFormStatus('error');
-      setFormMessage(error.message || 'Something went wrong. Please try again.');
+      setFormMessage(error.message || t.contact.modal.errorDefault);
     }
   };
 
@@ -123,17 +125,17 @@ export default function Contact() {
         <div className="contact__big" ref={bigTextRef}>
           <span className="line-wrap">
             <span className="line-inner" style={{ transform: 'translateY(110%)' }}>
-              Let&apos;s build
+              {t.contact.big[0]}
             </span>
           </span>
           <span className="line-wrap">
             <span className="line-inner accent" style={{ transform: 'translateY(110%)' }}>
-              something
+              {t.contact.big[1]}
             </span>
           </span>
           <span className="line-wrap">
             <span className="line-inner" style={{ transform: 'translateY(110%)' }}>
-              great.
+              {t.contact.big[2]}
             </span>
           </span>
         </div>
@@ -141,35 +143,31 @@ export default function Contact() {
         <div className="contact__split" ref={splitRef} style={{ opacity: 0 }}>
           <div className="contact__info">
             <div className="contact__info-item">
-              <label>Email</label>
+              <label>{t.contact.info.email}</label>
               <a href="mailto:onlyhouse@gmail.com">onlyhouse@gmail.com</a>
             </div>
             <div className="contact__info-item">
-              <label>GitHub</label>
+              <label>{t.contact.info.github}</label>
               <a href="https://github.com/onlyhouse1980" target="_blank" rel="noreferrer">
                 github.com/onlyhouse1980
               </a>
             </div>
             <div className="contact__info-item">
-              <label>LinkedIn</label>
+              <label>{t.contact.info.linkedin}</label>
               <a href="https://linkedin.com/in/ryan-nyberg" target="_blank" rel="noreferrer">
                 linkedin.com/in/ryan-nyberg
               </a>
             </div>
             <div className="contact__info-item">
-              <label>Location</label>
-              <span>Remote — Worldwide</span>
+              <label>{t.contact.info.location}</label>
+              <span>{t.contact.info.locationValue}</span>
             </div>
           </div>
 
           <div className="contact__cta">
-            <p className="contact__desc">
-              I&apos;m currently available for freelance projects, full-time roles, and
-              exciting collaborations. If you have a project in mind or just want
-              to chat, my inbox is always open.
-            </p>
+            <p className="contact__desc">{t.contact.desc}</p>
             <button type="button" className="contact__btn" onClick={handleOpenModal}>
-              <span>Start a conversation</span>
+              <span>{t.contact.cta}</span>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
@@ -199,20 +197,20 @@ export default function Contact() {
             <button
               type="button"
               className="contact-modal__close"
-              aria-label="Close contact form"
+              aria-label={t.contact.modal.close}
               onClick={() => setIsModalOpen(false)}
             >
               <span aria-hidden="true">×</span>
             </button>
 
             <div className="contact-modal__header">
-              <span className="contact-modal__eyebrow">Contact</span>
-              <h3 id="contact-modal-title">Start a conversation</h3>
+              <span className="contact-modal__eyebrow">{t.contact.modal.eyebrow}</span>
+              <h3 id="contact-modal-title">{t.contact.modal.title}</h3>
             </div>
 
             <form className="contact-form" onSubmit={handleSubmit}>
               <div className="contact-form__row">
-                <label htmlFor="contact-name">Name</label>
+                <label htmlFor="contact-name">{t.contact.modal.name}</label>
                 <input
                   id="contact-name"
                   name="name"
@@ -225,7 +223,7 @@ export default function Contact() {
               </div>
 
               <div className="contact-form__row">
-                <label htmlFor="contact-email">Email</label>
+                <label htmlFor="contact-email">{t.contact.modal.email}</label>
                 <input
                   id="contact-email"
                   name="email"
@@ -238,7 +236,7 @@ export default function Contact() {
               </div>
 
               <div className="contact-form__row">
-                <label htmlFor="contact-subject">Subject</label>
+                <label htmlFor="contact-subject">{t.contact.modal.subject}</label>
                 <input
                   id="contact-subject"
                   name="subject"
@@ -250,7 +248,7 @@ export default function Contact() {
               </div>
 
               <div className="contact-form__row">
-                <label htmlFor="contact-message">Message</label>
+                <label htmlFor="contact-message">{t.contact.modal.message}</label>
                 <textarea
                   id="contact-message"
                   name="message"
@@ -272,7 +270,7 @@ export default function Contact() {
                 className="contact-form__submit"
                 disabled={formStatus === 'submitting'}
               >
-                <span>{formStatus === 'submitting' ? 'Sending...' : 'Send message'}</span>
+                <span>{formStatus === 'submitting' ? t.contact.modal.sending : t.contact.modal.send}</span>
               </button>
             </form>
           </div>

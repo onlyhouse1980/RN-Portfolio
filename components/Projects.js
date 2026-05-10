@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useLang } from '../lib/i18n';
 
 // ─── YOUR PROJECTS — Edit this array to customize ────────────────────────────
 export const PROJECTS = [
@@ -105,21 +106,7 @@ function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
       const cardWidth = card.offsetWidth;
       const frontHeight = (cardWidth * 3) / 4;
       const target = isFlipped ? back.scrollHeight : frontHeight;
-      const cs = getComputedStyle(card);
-      console.log('[card]', project.num, {
-        isFlipped,
-        target,
-        prevInline: card.style.height,
-        prevComputed: cs.height,
-        transition: cs.transition,
-      });
       card.style.height = `${target}px`;
-      requestAnimationFrame(() => {
-        console.log('[card-after]', project.num, {
-          inline: card.style.height,
-          computed: getComputedStyle(card).height,
-        });
-      });
     };
 
     apply();
@@ -221,7 +208,7 @@ function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="project-card__arrow"
-                aria-label={`View ${project.title}`}
+                aria-label={project.viewLabel}
                 onClick={stopPropagation}
               >
                 ↗
@@ -256,7 +243,7 @@ function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
               target="_blank"
               rel="noopener noreferrer"
               className="project-card__arrow"
-              aria-label={`View ${project.title}`}
+              aria-label={project.viewLabel}
               onClick={stopPropagation}
             >
               ↗
@@ -271,6 +258,18 @@ function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
 export default function Projects() {
   const headerRef = useRef(null);
   const [flippedNum, setFlippedNum] = useState(null);
+  const { t } = useLang();
+
+  const localizedProjects = PROJECTS.map((p) => {
+    const localized = t.projects.items[p.num] || {};
+    const title = localized.title || p.title;
+    return {
+      ...p,
+      title,
+      desc: localized.desc || p.desc,
+      viewLabel: t.projects.viewLabel(title.replace('\n', ' ')),
+    };
+  });
 
   useEffect(() => {
     const init = async () => {
@@ -300,16 +299,16 @@ export default function Projects() {
     <section className="projects" id="projects">
       <div className="projects__header" ref={headerRef} style={{ opacity: 0 }}>
         <h2 className="projects__heading">
-          Selected<br />
-          <span style={{ color: 'var(--lime)' }}>Work</span>
+          {t.projects.heading[0]}<br />
+          <span style={{ color: 'var(--lime)' }}>{t.projects.heading[1]}</span>
         </h2>
         <div className="projects__count">
-          <span>{PROJECTS.length}</span> projects
+          <span>{localizedProjects.length}</span> {t.projects.countSuffix}
         </div>
       </div>
 
       <div className="projects__grid">
-        {PROJECTS.map((project, i) => (
+        {localizedProjects.map((project, i) => (
           <ProjectCard
             key={project.num}
             project={project}
@@ -323,95 +322,41 @@ export default function Projects() {
       <div className="projects__summary">
         <div className="projects__summary-header">
           <h3 className="projects__summary-heading">
-            Engineering<br />
-            <span style={{ color: 'var(--lime)' }}>Approach</span>
+            {t.projects.summary.heading[0]}<br />
+            <span style={{ color: 'var(--lime)' }}>{t.projects.summary.heading[1]}</span>
           </h3>
-          <p className="projects__summary-intro">
-            A consistent standard of quality is maintained across the portfolio through expert-level engineering and a craft-focused approach.
-          </p>
+          <p className="projects__summary-intro">{t.projects.summary.intro}</p>
         </div>
 
         <div className="projects__summary-grid">
-          <div className="summary-card">
-            <span className="summary-card__num">01</span>
-            <h4 className="summary-card__title">AI-Driven Applications</h4>
-            <p className="summary-card__desc">
-              Sites that use Gemini 3.0 Pro as a core architectural engine rather than a secondary feature.
-            </p>
-            <ul className="summary-card__list">
-              <li>
-                <strong>Fine Truth</strong> — Forensic AI verification engine generating real-time integrity scores (0–100), with a dynamic Hall of Fame / Wall of Shame ranking.
-              </li>
-              <li>
-                <strong>Can We Talk?</strong> — Multi-user chat interface with real-time emotional tone analysis and fact-checking for productive two-party dialogues.
-              </li>
-              <li>
-                <strong>Lifestory AI Creative</strong> — Autobiography app with AI-assisted writing prompts, multimedia integration, and an internal book-printing service.
-              </li>
-            </ul>
-          </div>
-
-          <div className="summary-card">
-            <span className="summary-card__num">02</span>
-            <h4 className="summary-card__title">Professional &amp; Legal Suites</h4>
-            <p className="summary-card__desc">
-              Platforms that emphasize data integrity, privacy, and administrative efficiency.
-            </p>
-            <ul className="summary-card__list">
-              <li>
-                <strong>Kanzlei Intake Suite</strong> — Structured legal intake with jurisdiction-aware guardrails for all 50 U.S. states and Germany also a GenAI triage system that categorizes and summarizes client information.
-              </li>
-              <li>
-                <strong>Launchpad SaaS</strong> — High-velocity boilerplate with production-grade Stripe integrations supporting complex subscription tiers.
-              </li>
-            </ul>
-          </div>
-
-          <div className="summary-card">
-            <span className="summary-card__num">03</span>
-            <h4 className="summary-card__title">Community &amp; Educational Hubs</h4>
-            <p className="summary-card__desc">
-              Sites focused on utility, real-time data, and instructional consistency.
-            </p>
-            <ul className="summary-card__list">
-              <li>
-                <strong>BarStart DE</strong> — Mobile-responsive bartender training hub with a searchable recipe database, interactive visual guides, and a dynamic quiz system.
-              </li>
-              <li>
-                <strong>OBCG Portal</strong> — Community water-usage dashboard with real-time consumption insights and a backend leak-detection system that saves customers money.
-              </li>
-            </ul>
-          </div>
+          {t.projects.summary.categories.map((cat) => (
+            <div className="summary-card" key={cat.num}>
+              <span className="summary-card__num">{cat.num}</span>
+              <h4 className="summary-card__title">{cat.title}</h4>
+              <p className="summary-card__desc">{cat.desc}</p>
+              <ul className="summary-card__list">
+                {cat.items.map((item) => (
+                  <li key={item.name}>
+                    <strong>{item.name}</strong> — {item.desc}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
         <div className="projects__summary-tech">
-          <span className="projects__summary-tech-eyebrow">Technical Summary</span>
-          <p className="projects__summary-tech-desc">
-            Across all sites, quality is maintained through an expert-level stack:
-          </p>
+          <span className="projects__summary-tech-eyebrow">{t.projects.summary.techEyebrow}</span>
+          <p className="projects__summary-tech-desc">{t.projects.summary.techDesc}</p>
           <div className="projects__summary-tech-grid">
-            <div className="tech-tier">
-              <span className="tech-tier__label">Frontend</span>
-              <span className="tech-tier__detail">
-                Next.js (95%), TypeScript (90%) — type-safety and performance.
-              </span>
-            </div>
-            <div className="tech-tier">
-              <span className="tech-tier__label">Interactivity</span>
-              <span className="tech-tier__detail">
-                GSAP, Framer Motion (85%) — high-fidelity UI components.
-              </span>
-            </div>
-            <div className="tech-tier">
-              <span className="tech-tier__label">Backend</span>
-              <span className="tech-tier__detail">
-                Node.js (88%), Prisma, PostgreSQL/MongoDB (82%) — robust architectures.
-              </span>
-            </div>
+            {t.projects.summary.techTiers.map((tier) => (
+              <div className="tech-tier" key={tier.label}>
+                <span className="tech-tier__label">{tier.label}</span>
+                <span className="tech-tier__detail">{tier.detail}</span>
+              </div>
+            ))}
           </div>
-          <p className="projects__summary-closing">
-            These sites represent a standard of high-performance engineering where technical automation and professional craft are prioritized to deliver reliable, scalable, and user-centric results.
-          </p>
+          <p className="projects__summary-closing">{t.projects.summary.closing}</p>
         </div>
       </div>
     </section>

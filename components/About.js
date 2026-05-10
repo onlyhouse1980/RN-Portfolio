@@ -1,15 +1,14 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-
-const TEXT =
-  'I craft high-performance web applications that push the boundaries of what\'s possible in a browser. With years of experience, I specialize in building seamless user experiences from pixel-perfect interfaces to scalable backend architectures.';
+import { useLang } from '../lib/i18n';
 
 export default function About() {
   const sectionRef = useRef(null);
   const wordsRef = useRef(null);
   const statsRef = useRef(null);
   const headingRef = useRef(null);
+  const { t, lang } = useLang();
 
   useEffect(() => {
     const init = async () => {
@@ -17,7 +16,6 @@ export default function About() {
       const { ScrollTrigger } = await import('gsap/ScrollTrigger');
       gsap.registerPlugin(ScrollTrigger);
 
-      // Heading reveal
       gsap.fromTo(
         headingRef.current,
         { opacity: 0, x: -60 },
@@ -33,9 +31,9 @@ export default function About() {
         }
       );
 
-      // Word-by-word text reveal
       const words = wordsRef.current?.querySelectorAll('.about__word');
       if (words) {
+        gsap.set(words, { opacity: 0, y: 18 });
         gsap.to(words, {
           opacity: 1,
           y: 0,
@@ -49,7 +47,6 @@ export default function About() {
         });
       }
 
-      // Stats reveal
       const stats = statsRef.current?.querySelectorAll('.about__stat');
       if (stats) {
         gsap.fromTo(
@@ -70,7 +67,6 @@ export default function About() {
         );
       }
 
-      // Counter animation for numbers
       const counters = statsRef.current?.querySelectorAll('.about__stat-num');
       if (counters) {
         counters.forEach((counter) => {
@@ -93,74 +89,46 @@ export default function About() {
     };
 
     init();
-  }, []);
+  }, [lang]);
 
-  const words = TEXT.split(' ');
+  const words = t.about.text.split(' ');
 
   return (
     <section className="about" id="about" ref={sectionRef}>
       <div className="about__inner">
-        {/* Left column */}
         <div>
-          <p className="about__label">About Me</p>
+          <p className="about__label">{t.about.label}</p>
           <h2 className="about__heading" ref={headingRef} style={{ opacity: 0 }}>
-            Code as<br /><em>craft</em>
+            {t.about.heading[0]}<br /><em>{t.about.heading[1]}</em>
           </h2>
 
           <p className="about__text" ref={wordsRef}>
             {words.map((word, i) => (
-              <span key={i} className="about__word">{word}</span>
+              <span key={`${lang}-${i}`} className="about__word">{word}</span>
             ))}
           </p>
         </div>
 
-        {/* Right column */}
         <div>
           <div className="about__stats" ref={statsRef}>
-            <div className="about__stat" role="group" aria-label="10+ Years of Experience">
-              <span
-                className="about__stat-num"
-                data-target="10"
-                data-suffix="+"
-                aria-hidden="true"
+            {t.about.stats.map((stat, i) => (
+              <div
+                key={i}
+                className="about__stat"
+                role="group"
+                aria-label={`${stat.num} ${stat.label}`}
               >
-                10+
-              </span>
-              <span className="about__stat-label" aria-hidden="true">Years of Experience</span>
-            </div>
-            <div className="about__stat" role="group" aria-label="40+ Projects Shipped">
-              <span
-                className="about__stat-num"
-                data-target="40"
-                data-suffix="+"
-                aria-hidden="true"
-              >
-                40+
-              </span>
-              <span className="about__stat-label" aria-hidden="true">Projects Shipped</span>
-            </div>
-            <div className="about__stat" role="group" aria-label="20+ Happy Clients">
-              <span
-                className="about__stat-num"
-                data-target="20"
-                data-suffix="+"
-                aria-hidden="true"
-              >
-                20+
-              </span>
-              <span className="about__stat-label" aria-hidden="true">Happy Clients</span>
-            </div>
-            <div className="about__stat" role="group" aria-label="100% On-Time Delivery">
-              <span
-                className="about__stat-num"
-                data-target="100"
-                data-suffix="%"
-                aria-hidden="true"
-              >
-                100%
-              </span>
-              <span className="about__stat-label" aria-hidden="true">On-Time Delivery</span>
-            </div>
+                <span
+                  className="about__stat-num"
+                  data-target={stat.target}
+                  data-suffix={stat.suffix}
+                  aria-hidden="true"
+                >
+                  {stat.num}
+                </span>
+                <span className="about__stat-label" aria-hidden="true">{stat.label}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>

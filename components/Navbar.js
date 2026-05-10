@@ -1,10 +1,12 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useLang } from '../lib/i18n';
 
 export default function Navbar() {
   const navRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const { lang, setLang, t } = useLang();
 
   useEffect(() => {
     const nav = navRef.current;
@@ -65,6 +67,25 @@ export default function Navbar() {
       <a href="/" className="navbar__logo">
         RYAN<span>.</span>NYBERG
       </a>
+      <div className="navbar__lang" role="group" aria-label={t.nav.switchLabel}>
+        <button
+          type="button"
+          className={`navbar__lang-btn${lang === 'en' ? ' navbar__lang-btn--active' : ''}`}
+          aria-pressed={lang === 'en'}
+          onClick={() => setLang('en')}
+        >
+          EN
+        </button>
+        <span className="navbar__lang-sep" aria-hidden="true">/</span>
+        <button
+          type="button"
+          className={`navbar__lang-btn${lang === 'de' ? ' navbar__lang-btn--active' : ''}`}
+          aria-pressed={lang === 'de'}
+          onClick={() => setLang('de')}
+        >
+          DE
+        </button>
+      </div>
       <button
         type="button"
         className="navbar__toggle"
@@ -75,10 +96,10 @@ export default function Navbar() {
         <span /><span /><span />
       </button>
       <ul className="navbar__links">
-        <li><a onClick={() => scrollTo('about')} href="#about">About</a></li>
-        <li><a onClick={() => scrollTo('projects')} href="#projects">Work</a></li>
-        <li><a onClick={() => scrollTo('skills')} href="#skills">Skills</a></li>
-        <li><a onClick={() => scrollTo('contact')} href="#contact">Contact</a></li>
+        <li><a onClick={() => scrollTo('about')} href="#about">{t.nav.about}</a></li>
+        <li><a onClick={() => scrollTo('projects')} href="#projects">{t.nav.work}</a></li>
+        <li><a onClick={() => scrollTo('skills')} href="#skills">{t.nav.skills}</a></li>
+        <li><a onClick={() => scrollTo('contact')} href="#contact">{t.nav.contact}</a></li>
       </ul>
     </nav>
   );

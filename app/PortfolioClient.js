@@ -10,8 +10,11 @@ import About from '../components/About';
 import Projects from '../components/Projects';
 import Skills from '../components/Skills';
 import Contact from '../components/Contact';
+import { LanguageProvider, useLang } from '../lib/i18n';
 
-export default function PortfolioClient() {
+function PortfolioBody() {
+  const { t } = useLang();
+
   // Lenis smooth scroll — initialised once at the client root
   useEffect(() => {
     let lenis;
@@ -27,7 +30,6 @@ export default function PortfolioClient() {
         touchMultiplier: 1.5,
       });
 
-      // Sync Lenis with GSAP ScrollTrigger
       const { gsap } = await import('gsap');
       const { ScrollTrigger } = await import('gsap/ScrollTrigger');
       gsap.registerPlugin(ScrollTrigger);
@@ -57,7 +59,7 @@ export default function PortfolioClient() {
 
         <div className="section-line" aria-hidden="true">
           <div className="section-line__bar" />
-          <span className="section-line__text">02 — Selected Work</span>
+          <span className="section-line__text">{t.sectionLines.work}</span>
           <div className="section-line__bar" />
         </div>
 
@@ -65,7 +67,7 @@ export default function PortfolioClient() {
 
         <div className="section-line" aria-hidden="true">
           <div className="section-line__bar" />
-          <span className="section-line__text">03 — Skills &amp; Tech</span>
+          <span className="section-line__text">{t.sectionLines.skills}</span>
           <div className="section-line__bar" />
         </div>
 
@@ -75,9 +77,17 @@ export default function PortfolioClient() {
 
       <footer className="footer">
         <p className="footer__copy">
-          © 2025 <span>RYAN.NYBERG</span> — Built with Next.js &amp; GSAP
+          © 2025 <span>RYAN.NYBERG</span> — {t.footer}
         </p>
       </footer>
     </>
+  );
+}
+
+export default function PortfolioClient() {
+  return (
+    <LanguageProvider>
+      <PortfolioBody />
+    </LanguageProvider>
   );
 }
