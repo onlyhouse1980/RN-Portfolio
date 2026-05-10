@@ -460,10 +460,11 @@ body {
 /* Project Card */
 .project-card {
   position: relative;
-  overflow: hidden;
   aspect-ratio: 4/3;
   background: var(--bg-2);
   cursor: none;
+  perspective: 1400px;
+  isolation: isolate;
 }
 
 .project-card:nth-child(odd) { margin-top: 4rem; }
@@ -472,10 +473,78 @@ body {
   position: absolute;
   inset: 0;
   z-index: 0;
-  transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.project-card:hover .project-card__bg { transform: scale(1.05); }
+.project-card__inner {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  transform-style: preserve-3d;
+  transition: transform 0.85s cubic-bezier(0.65, 0, 0.35, 1);
+  will-change: transform;
+}
+
+.project-card.project-card--flipped .project-card__inner {
+  transform: rotateY(180deg);
+}
+
+.project-card__face {
+  position: absolute;
+  inset: 0;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  overflow: hidden;
+}
+
+.project-card__face--front {
+  transform: rotateY(0deg) translateZ(0);
+}
+
+.project-card__face--back {
+  transform: rotateY(180deg) translateZ(0);
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  background: linear-gradient(160deg, rgba(6, 6, 6, 0.95) 0%, rgba(15, 15, 15, 0.98) 100%);
+  border: 1px solid rgba(180, 255, 0, 0.25);
+}
+
+.project-card__back-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.2vw, 2rem);
+  color: var(--white);
+  line-height: 0.95;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin: 0.75rem 0 1rem;
+}
+
+.project-card__desc {
+  font-family: var(--font-body, inherit);
+  font-size: clamp(0.85rem, 1vw, 0.95rem);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.82);
+  margin: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+.project-card__back-meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.project-card__back-meta .project-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.project-card__back-meta .project-card__arrow {
+  margin-left: auto;
+}
 
 .project-card__preview {
   position: absolute;
@@ -1150,4 +1219,16 @@ body {
   .footer { flex-direction: column; gap: 1rem; padding: 1.5rem; }
   body { cursor: auto; }
   .cursor, .cursor-follower { display: none; }
+}
+
+@media (hover: none) {
+  .project-card.project-card--flipped .project-card__inner {
+    transform: none;
+  }
+  .project-card__face--back { display: none; }
+  .project-card__meta {
+    display: flex;
+    transform: none;
+    opacity: 1;
+  }
 }

@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 
 const TEXT =
-  'I craft high-performance web applications that push the boundaries of what\'s possible in a browser. With 5+ years of experience, I specialize in building seamless user experiences from pixel-perfect interfaces to scalable backend architectures.';
+  'I craft high-performance web applications that push the boundaries of what\'s possible in a browser. With 10+ years of experience, I specialize in building seamless user experiences from pixel-perfect interfaces to scalable backend architectures.';
 
 export default function About() {
   const sectionRef = useRef(null);
@@ -123,7 +123,7 @@ export default function About() {
                 data-target="10"
                 data-suffix="+"
               >
-                0+
+                5+
               </span>
               <span className="about__stat-label">Years of Experience</span>
             </div>
@@ -133,7 +133,7 @@ export default function About() {
                 data-target="40"
                 data-suffix="+"
               >
-                0+
+                3+
               </span>
               <span className="about__stat-label">Projects Shipped</span>
             </div>
@@ -143,7 +143,7 @@ export default function About() {
                 data-target="20"
                 data-suffix="+"
               >
-                0+
+                10+
               </span>
               <span className="about__stat-label">Happy Clients</span>
             </div>
@@ -153,7 +153,7 @@ export default function About() {
                 data-target="100"
                 data-suffix="%"
               >
-                0%
+                90%
               </span>
               <span className="about__stat-label">On-Time Delivery</span>
             </div>
