@@ -95,6 +95,16 @@ export const PROJECTS = [
     icon: '🔗',
     fallbackImage: '/tslearn.png',
   },
+  {
+    num: '10',
+    title: 'HandyWrap\nE-Commerce',
+    tags: ['Radix', 'Zod', 'Prisma'],
+    desc: 'HandyWrap is a specialized e-commerce platform built to deliver a "pixel-perfect" user experience for creating personalized, high-quality phone cases. Database Management (Prisma): I utilized Prisma as the ORM to manage the applications scalable backend architecture. Payment Processing (Stripe): To facilitate secure, production-ready transactions, I integrated Stripe to manage the checkout flow. UI & Validation (Radix & Zod).',
+    year: '2025',
+    link: 'https://casecobra-ihyo.vercel.app/',
+    icon: '🔗',
+    fallbackImage: '/handywrap.png',
+  },
 ];
 // ─────────────────────────────────────────────────────────────────────────────
 
