@@ -87,9 +87,8 @@ export const PROJECTS = [
 ];
 // ─────────────────────────────────────────────────────────────────────────────
 
-function ProjectCard({ project, index }) {
+function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
   const cardRef = useRef(null);
-  const [isFlipped, setIsFlipped] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -123,22 +122,28 @@ function ProjectCard({ project, index }) {
     init();
   }, [index]);
 
+  const toggle = () => {
+    setFlippedNum((prev) => (prev === project.num ? null : project.num));
+  };
+
   const handleCardClick = (e) => {
     if (e.pointerType !== undefined && e.pointerType !== 'mouse') {
-      setIsFlipped((v) => !v);
+      toggle();
       return;
     }
     if (typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches) {
-      setIsFlipped((v) => !v);
+      toggle();
     }
   };
 
   const handlePointerEnter = (e) => {
-    if (e.pointerType === 'mouse') setIsFlipped(true);
+    if (e.pointerType === 'mouse') setFlippedNum(project.num);
   };
 
   const handlePointerLeave = (e) => {
-    if (e.pointerType === 'mouse') setIsFlipped(false);
+    if (e.pointerType === 'mouse') {
+      setFlippedNum((prev) => (prev === project.num ? null : prev));
+    }
   };
 
   const stopPropagation = (e) => e.stopPropagation();
@@ -220,6 +225,7 @@ function ProjectCard({ project, index }) {
 
 export default function Projects() {
   const headerRef = useRef(null);
+  const [flippedNum, setFlippedNum] = useState(null);
 
   useEffect(() => {
     const init = async () => {
@@ -259,7 +265,13 @@ export default function Projects() {
 
       <div className="projects__grid">
         {PROJECTS.map((project, i) => (
-          <ProjectCard key={project.num} project={project} index={i} />
+          <ProjectCard
+            key={project.num}
+            project={project}
+            index={i}
+            isFlipped={flippedNum === project.num}
+            setFlippedNum={setFlippedNum}
+          />
         ))}
       </div>
     </section>
