@@ -123,7 +123,7 @@ export default function About() {
                 data-target="10"
                 data-suffix="+"
               >
-                5+
+                10+
               </span>
               <span className="about__stat-label">Years of Experience</span>
             </div>
@@ -133,7 +133,7 @@ export default function About() {
                 data-target="40"
                 data-suffix="+"
               >
-                3+
+                40+
               </span>
               <span className="about__stat-label">Projects Shipped</span>
             </div>
