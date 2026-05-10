@@ -461,19 +461,13 @@ body {
 .project-card {
   position: relative;
   aspect-ratio: 4/3;
-  background: var(--bg-2);
+  background: transparent;
   cursor: none;
   perspective: 1400px;
   isolation: isolate;
 }
 
 .project-card:nth-child(odd) { margin-top: 4rem; }
-
-.project-card__bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
 
 .project-card__inner {
   position: absolute;
@@ -612,14 +606,6 @@ body {
 .project-card__iframe.loaded {
   opacity: 1;
 }
-
-/* Unique visual for each card */
-.project-card:nth-child(1) .project-card__bg { background: linear-gradient(135deg, #0f1f0f 0%, #1a3a0a 50%, #0a1a0a 100%); }
-.project-card:nth-child(2) .project-card__bg { background: linear-gradient(135deg, #1a0f0a 0%, #2d1500 50%, #1a0a00 100%); }
-.project-card:nth-child(3) .project-card__bg { background: linear-gradient(135deg, #0a0a1f 0%, #0d0d3a 50%, #050515 100%); }
-.project-card:nth-child(4) .project-card__bg { background: linear-gradient(135deg, #1a0a14 0%, #2d0020 50%, #0f0010 100%); }
-.project-card:nth-child(5) .project-card__bg { background: linear-gradient(135deg, #0f1a1a 0%, #0a2a2a 50%, #051515 100%); }
-.project-card:nth-child(6) .project-card__bg { background: linear-gradient(135deg, #1a1a0a 0%, #2a2500 50%, #151200 100%); }
 
 .project-card__overlay {
   position: absolute;
@@ -1201,8 +1187,18 @@ body {
   .projects__grid { grid-template-columns: 1fr; padding: 0 1.5rem; }
   .project-card:nth-child(odd) { margin-top: 0; }
   .project-card__overlay { padding: 1.25rem 1.25rem 5px; }
-  .project-card__num { margin-bottom: 0.25rem; }
-  .project-card__title { margin-bottom: 0; }
+  .project-card__num { margin-bottom: 0.25rem; font-size: 0.7rem; }
+  .project-card__title {
+    font-size: clamp(1rem, 4.2vw, 1.4rem);
+    line-height: 1;
+    margin-bottom: 0;
+  }
+  .project-card__back-title {
+    font-size: clamp(1rem, 4.2vw, 1.4rem);
+    margin: 0.4rem 0 0.6rem;
+  }
+  .project-card__face--back { padding: 1.25rem; }
+  .project-card__desc { font-size: 0.78rem; line-height: 1.4; }
   .project-card__meta { display: none; }
   .skills { padding: 6rem 1.5rem; }
   .skills__inner { grid-template-columns: 1fr; gap: 4rem; }
@@ -1221,14 +1217,3 @@ body {
   .cursor, .cursor-follower { display: none; }
 }
 
-@media (hover: none) {
-  .project-card.project-card--flipped .project-card__inner {
-    transform: none;
-  }
-  .project-card__face--back { display: none; }
-  .project-card__meta {
-    display: flex;
-    transform: none;
-    opacity: 1;
-  }
-}

@@ -12,6 +12,7 @@ export const PROJECTS = [
     year: '2026',
     link: 'https://bartender-blue.vercel.app',
     icon: '🛒',
+    fallbackImage: '/barstart.png',
   },
   {
     num: '02',
@@ -21,6 +22,7 @@ export const PROJECTS = [
     year: '2026',
     link: 'https://obcg-modern.vercel.app',
     icon: '📊',
+    fallbackImage: '/obcg.png',
   },
   {
     num: '03',
@@ -30,6 +32,7 @@ export const PROJECTS = [
     year: '2026',
     link: 'https://kanzlei-intake-suite.online/',
     icon: '🤖',
+    fallbackImage: '/kanzlei.png',
   },
   {
     num: '04',
@@ -39,6 +42,7 @@ export const PROJECTS = [
     year: '2025',
     link: 'https://saas-boilerplate-xi-rose.vercel.app',
     icon: '🌐',
+    fallbackImage: '/launchpad.png',
   },
   {
     num: '05',
@@ -58,6 +62,7 @@ export const PROJECTS = [
     year: '2025',
     link: 'https://ryanernstnyberg.com',
     icon: '🔗',
+    fallbackImage: '/canwetalk.png',
   },
   {
     num: '07',
@@ -67,6 +72,7 @@ export const PROJECTS = [
     year: '2025',
     link: 'https://lumen-b4-after.vercel.app',
     icon: '🔗',
+    fallbackImage: '/uxui.png',
   },
   {
     num: '08',
@@ -83,63 +89,7 @@ export const PROJECTS = [
 
 function ProjectCard({ project, index }) {
   const cardRef = useRef(null);
-  const previewRef = useRef(null);
-  const iframeRef = useRef(null);
-  const useImagePreview = Boolean(project.fallbackImage);
-  const [shouldLoadIframe, setShouldLoadIframe] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
-
-  useEffect(() => {
-    if (useImagePreview || shouldLoadIframe) return;
-    const card = cardRef.current;
-    if (!card) return;
-
-    const trigger = () => setShouldLoadIframe(true);
-
-    if (typeof IntersectionObserver === 'undefined') {
-      trigger();
-      return;
-    }
-
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          trigger();
-          io.disconnect();
-        }
-      },
-      { rootMargin: '200px 0px' }
-    );
-    io.observe(card);
-
-    card.addEventListener('pointerenter', trigger, { once: true });
-    card.addEventListener('focusin', trigger, { once: true });
-    card.addEventListener('touchstart', trigger, { once: true, passive: true });
-
-    return () => {
-      io.disconnect();
-      card.removeEventListener('pointerenter', trigger);
-      card.removeEventListener('focusin', trigger);
-      card.removeEventListener('touchstart', trigger);
-    };
-  }, [useImagePreview, shouldLoadIframe]);
-
-  useEffect(() => {
-    const preview = previewRef.current;
-    const iframe = iframeRef.current;
-    if (!preview || !iframe) return;
-
-    const updateScale = () => {
-      if (!preview.offsetWidth) return;
-      const scale = preview.offsetWidth / 1280;
-      iframe.style.transform = `scale(${scale})`;
-    };
-
-    updateScale();
-    const ro = new ResizeObserver(updateScale);
-    ro.observe(preview);
-    return () => ro.disconnect();
-  }, [shouldLoadIframe]);
 
   useEffect(() => {
     const init = async () => {
@@ -173,6 +123,14 @@ function ProjectCard({ project, index }) {
     init();
   }, [index]);
 
+  const handleCardClick = () => {
+    if (typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches) {
+      setIsFlipped((v) => !v);
+    }
+  };
+
+  const stopPropagation = (e) => e.stopPropagation();
+
   return (
     <div
       className={`project-card${isFlipped ? ' project-card--flipped' : ''}`}
@@ -180,8 +138,8 @@ function ProjectCard({ project, index }) {
       style={{ opacity: 0 }}
       onMouseEnter={() => setIsFlipped(true)}
       onMouseLeave={() => setIsFlipped(false)}
+      onClick={handleCardClick}
     >
-      <div className="project-card__bg" />
       <div className="project-card__inner">
         <div className="project-card__face project-card__face--front">
           <div className="project-card__lines" />
@@ -202,38 +160,19 @@ function ProjectCard({ project, index }) {
                 rel="noopener noreferrer"
                 className="project-card__arrow"
                 aria-label={`View ${project.title}`}
+                onClick={stopPropagation}
               >
                 ↗
               </a>
             </div>
           </div>
-          <div className="project-card__preview" ref={previewRef}>
-            {project.fallbackImage ? (
-              <img
-                className="project-card__preview-image"
-                src={project.fallbackImage}
-                alt={`${project.title.replace('\n', ' ')} preview`}
-                loading="lazy"
-              />
-            ) : (
-              <>
-                <span className="project-card__preview-fallback">{project.icon}</span>
-                {shouldLoadIframe && (
-                  <iframe
-                    ref={iframeRef}
-                    src={project.link}
-                    className="project-card__iframe"
-                    title={`Preview of ${project.title}`}
-                    loading="lazy"
-                    tabIndex={-1}
-                    sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-                    onLoad={(e) => {
-                      e.currentTarget.classList.add('loaded');
-                    }}
-                  />
-                )}
-              </>
-            )}
+          <div className="project-card__preview">
+            <img
+              className="project-card__preview-image"
+              src={project.fallbackImage}
+              alt={`${project.title.replace('\n', ' ')} preview`}
+              loading="lazy"
+            />
           </div>
         </div>
         <div className="project-card__face project-card__face--back">
@@ -256,6 +195,7 @@ function ProjectCard({ project, index }) {
               rel="noopener noreferrer"
               className="project-card__arrow"
               aria-label={`View ${project.title}`}
+              onClick={stopPropagation}
             >
               ↗
             </a>
