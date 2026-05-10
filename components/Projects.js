@@ -87,9 +87,8 @@ export const PROJECTS = [
 ];
 // ─────────────────────────────────────────────────────────────────────────────
 
-function ProjectCard({ project, index }) {
+function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
   const cardRef = useRef(null);
-  const [isFlipped, setIsFlipped] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -125,7 +124,7 @@ function ProjectCard({ project, index }) {
 
   const handleCardClick = () => {
     if (typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches) {
-      setIsFlipped((v) => !v);
+      setFlippedNum((prev) => (prev === project.num ? null : project.num));
     }
   };
 
@@ -136,8 +135,8 @@ function ProjectCard({ project, index }) {
       className={`project-card${isFlipped ? ' project-card--flipped' : ''}`}
       ref={cardRef}
       style={{ opacity: 0 }}
-      onMouseEnter={() => setIsFlipped(true)}
-      onMouseLeave={() => setIsFlipped(false)}
+      onMouseEnter={() => setFlippedNum(project.num)}
+      onMouseLeave={() => setFlippedNum((prev) => (prev === project.num ? null : prev))}
       onClick={handleCardClick}
     >
       <div className="project-card__inner">
@@ -208,6 +207,7 @@ function ProjectCard({ project, index }) {
 
 export default function Projects() {
   const headerRef = useRef(null);
+  const [flippedNum, setFlippedNum] = useState(null);
 
   useEffect(() => {
     const init = async () => {
@@ -247,7 +247,13 @@ export default function Projects() {
 
       <div className="projects__grid">
         {PROJECTS.map((project, i) => (
-          <ProjectCard key={project.num} project={project} index={i} />
+          <ProjectCard
+            key={project.num}
+            project={project}
+            index={i}
+            isFlipped={flippedNum === project.num}
+            setFlippedNum={setFlippedNum}
+          />
         ))}
       </div>
     </section>
