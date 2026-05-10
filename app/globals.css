@@ -276,7 +276,7 @@ body {
   max-width: 400px;
   line-height: 1.6;
   letter-spacing: 0.05em;
-  opacity: 0;
+  opacity: 1;
 }
 
 .hero__scroll-indicator {
@@ -1292,6 +1292,12 @@ body {
   .project-card__face--back { padding: 1.25rem; }
   .project-card__desc { font-size: 0.78rem; line-height: 1.4; overflow: visible; flex: 0 0 auto; }
   .project-card__meta { display: none; }
+  .project-card__preview {
+    width: 86.4%;
+    padding-bottom: 48.6%; /* 86.4% x 9/16 keeps 16:9 */
+    top: 4%;
+    right: 4%;
+  }
   /* On mobile, the card height is JS-controlled so it can animate when flipped. */
   .project-card {
     aspect-ratio: auto;
