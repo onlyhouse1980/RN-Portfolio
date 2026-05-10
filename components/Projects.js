@@ -138,6 +138,7 @@ function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
 
       // Alternate entrance direction
       const fromX = index % 2 === 0 ? -80 : 80;
+      const isMobile = window.matchMedia('(max-width: 900px)').matches;
 
       gsap.fromTo(
         card,
@@ -148,10 +149,17 @@ function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
           scale: 1,
           duration: 1,
           ease: 'expo.out',
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 88%',
-          },
+          scrollTrigger: isMobile
+            ? {
+                trigger: card,
+                start: 'top bottom',
+                end: 'top center',
+                scrub: 0.5,
+              }
+            : {
+                trigger: card,
+                start: 'top 88%',
+              },
         }
       );
     };
