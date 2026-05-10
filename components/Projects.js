@@ -89,38 +89,24 @@ export const PROJECTS = [
 
 function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
   const cardRef = useRef(null);
-  const innerRef = useRef(null);
   const backRef = useRef(null);
-  const hasMeasuredRef = useRef(false);
 
   useEffect(() => {
     const card = cardRef.current;
-    const inner = innerRef.current;
     const back = backRef.current;
-    if (!card || !inner || !back) return;
+    if (!card || !back) return;
 
     const apply = () => {
       const isMobile = window.matchMedia('(max-width: 900px)').matches;
       if (!isMobile) {
-        inner.style.height = '';
-        hasMeasuredRef.current = false;
+        card.style.height = '';
         return;
       }
       const cardWidth = card.offsetWidth;
       const frontHeight = (cardWidth * 3) / 4;
       const target = isFlipped ? back.scrollHeight : frontHeight;
-
-      if (!hasMeasuredRef.current) {
-        // First mobile measurement: skip the transition so the card doesn't
-        // animate from 0 to its starting height on mount.
-        inner.style.transition = 'none';
-        inner.style.height = `${target}px`;
-        void inner.offsetHeight;
-        inner.style.transition = '';
-        hasMeasuredRef.current = true;
-      } else {
-        inner.style.height = `${target}px`;
-      }
+      console.log('[card]', project.num, { isFlipped, cardWidth, frontHeight, backScrollHeight: back.scrollHeight, target, prev: card.style.height });
+      card.style.height = `${target}px`;
     };
 
     apply();
@@ -195,7 +181,7 @@ function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
       onPointerLeave={handlePointerLeave}
       onClick={handleCardClick}
     >
-      <div className="project-card__inner" ref={innerRef}>
+      <div className="project-card__inner">
         <div className="project-card__face project-card__face--front">
           <div className="project-card__lines" />
           <div className="project-card__overlay">

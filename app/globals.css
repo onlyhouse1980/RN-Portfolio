@@ -1200,15 +1200,10 @@ body {
   .project-card__face--back { padding: 1.25rem; }
   .project-card__desc { font-size: 0.78rem; line-height: 1.4; overflow: visible; flex: 0 0 auto; }
   .project-card__meta { display: none; }
-  /* On mobile, the inner gets an explicit height (set via JS) so it can animate
-     from front-aspect to back-content height when flipped. */
-  .project-card { aspect-ratio: auto; }
-  .project-card__inner {
-    position: relative;
-    inset: auto;
-    aspect-ratio: 4/3;
-    transition: transform 0.85s cubic-bezier(0.65, 0, 0.35, 1),
-                height 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+  /* On mobile, the card height is JS-controlled so it can animate when flipped. */
+  .project-card {
+    aspect-ratio: auto;
+    transition: height 0.6s cubic-bezier(0.65, 0, 0.35, 1);
   }
   .skills { padding: 6rem 1.5rem; }
   .skills__inner { grid-template-columns: 1fr; gap: 4rem; }
