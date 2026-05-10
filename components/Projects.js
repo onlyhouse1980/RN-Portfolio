@@ -319,6 +319,101 @@ export default function Projects() {
           />
         ))}
       </div>
+
+      <div className="projects__summary">
+        <div className="projects__summary-header">
+          <h3 className="projects__summary-heading">
+            Engineering<br />
+            <span style={{ color: 'var(--lime)' }}>Approach</span>
+          </h3>
+          <p className="projects__summary-intro">
+            A consistent standard of quality is maintained across the portfolio through expert-level engineering and a craft-focused approach.
+          </p>
+        </div>
+
+        <div className="projects__summary-grid">
+          <div className="summary-card">
+            <span className="summary-card__num">01</span>
+            <h4 className="summary-card__title">AI-Driven Applications</h4>
+            <p className="summary-card__desc">
+              Sites that use Gemini 3.0 Pro as a core architectural engine rather than a secondary feature.
+            </p>
+            <ul className="summary-card__list">
+              <li>
+                <strong>Fine Truth</strong> — Forensic AI verification engine generating real-time integrity scores (0–100), with a dynamic Hall of Fame / Wall of Shame ranking.
+              </li>
+              <li>
+                <strong>Can We Talk?</strong> — Multi-user chat interface with real-time emotional tone analysis and fact-checking for productive two-party dialogues.
+              </li>
+              <li>
+                <strong>Lifestory AI Creative</strong> — Autobiography app with AI-assisted writing prompts, multimedia integration, and an internal book-printing service.
+              </li>
+            </ul>
+          </div>
+
+          <div className="summary-card">
+            <span className="summary-card__num">02</span>
+            <h4 className="summary-card__title">Professional &amp; Legal Suites</h4>
+            <p className="summary-card__desc">
+              Platforms that emphasize data integrity, privacy, and administrative efficiency.
+            </p>
+            <ul className="summary-card__list">
+              <li>
+                <strong>Kanzlei Intake Suite</strong> — Structured legal intake with jurisdiction-aware guardrails for all 50 U.S. states and Germany also a GenAI triage system that categorizes and summarizes client information.
+              </li>
+              <li>
+                <strong>Launchpad SaaS</strong> — High-velocity boilerplate with production-grade Stripe integrations supporting complex subscription tiers.
+              </li>
+            </ul>
+          </div>
+
+          <div className="summary-card">
+            <span className="summary-card__num">03</span>
+            <h4 className="summary-card__title">Community &amp; Educational Hubs</h4>
+            <p className="summary-card__desc">
+              Sites focused on utility, real-time data, and instructional consistency.
+            </p>
+            <ul className="summary-card__list">
+              <li>
+                <strong>BarStart DE</strong> — Mobile-responsive bartender training hub with a searchable recipe database, interactive visual guides, and a dynamic quiz system.
+              </li>
+              <li>
+                <strong>OBCG Portal</strong> — Community water-usage dashboard with real-time consumption insights and a backend leak-detection system that saves customers money.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="projects__summary-tech">
+          <span className="projects__summary-tech-eyebrow">Technical Summary</span>
+          <p className="projects__summary-tech-desc">
+            Across all sites, quality is maintained through an expert-level stack:
+          </p>
+          <div className="projects__summary-tech-grid">
+            <div className="tech-tier">
+              <span className="tech-tier__label">Frontend</span>
+              <span className="tech-tier__detail">
+                Next.js (95%), TypeScript (90%) — type-safety and performance.
+              </span>
+            </div>
+            <div className="tech-tier">
+              <span className="tech-tier__label">Interactivity</span>
+              <span className="tech-tier__detail">
+                GSAP, Framer Motion (85%) — high-fidelity UI components.
+              </span>
+            </div>
+            <div className="tech-tier">
+              <span className="tech-tier__label">Backend</span>
+              <span className="tech-tier__detail">
+                Node.js (88%), Prisma, PostgreSQL/MongoDB (82%) — robust architectures.
+              </span>
+            </div>
+          </div>
+          <p className="projects__summary-closing">
+            These sites represent a standard of high-performance engineering where technical automation and professional craft are prioritized to deliver reliable, scalable, and user-centric results.
+          </p>
+        </div>
+      </div>
     </section>
   );
 }

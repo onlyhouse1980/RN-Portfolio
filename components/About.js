@@ -117,45 +117,49 @@ export default function About() {
         {/* Right column */}
         <div>
           <div className="about__stats" ref={statsRef}>
-            <div className="about__stat">
+            <div className="about__stat" role="group" aria-label="10+ Years of Experience">
               <span
                 className="about__stat-num"
                 data-target="10"
                 data-suffix="+"
+                aria-hidden="true"
               >
                 10+
               </span>
-              <span className="about__stat-label">Years of Experience</span>
+              <span className="about__stat-label" aria-hidden="true">Years of Experience</span>
             </div>
-            <div className="about__stat">
+            <div className="about__stat" role="group" aria-label="40+ Projects Shipped">
               <span
                 className="about__stat-num"
                 data-target="40"
                 data-suffix="+"
+                aria-hidden="true"
               >
                 40+
               </span>
-              <span className="about__stat-label">Projects Shipped</span>
+              <span className="about__stat-label" aria-hidden="true">Projects Shipped</span>
             </div>
-            <div className="about__stat">
+            <div className="about__stat" role="group" aria-label="20+ Happy Clients">
               <span
                 className="about__stat-num"
                 data-target="20"
                 data-suffix="+"
+                aria-hidden="true"
               >
-                10+
+                20+
               </span>
-              <span className="about__stat-label">Happy Clients</span>
+              <span className="about__stat-label" aria-hidden="true">Happy Clients</span>
             </div>
-            <div className="about__stat">
+            <div className="about__stat" role="group" aria-label="100% On-Time Delivery">
               <span
                 className="about__stat-num"
                 data-target="100"
                 data-suffix="%"
+                aria-hidden="true"
               >
-                90%
+                100%
               </span>
-              <span className="about__stat-label">On-Time Delivery</span>
+              <span className="about__stat-label" aria-hidden="true">On-Time Delivery</span>
             </div>
           </div>
         </div>

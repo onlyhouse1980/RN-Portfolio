@@ -768,6 +768,190 @@ body {
   height: 30px;
 }
 
+/* ===== PROJECTS SUMMARY ===== */
+.projects__summary {
+  padding: 8rem 3rem 4rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.projects__summary-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  margin-bottom: 4rem;
+  align-items: end;
+}
+
+.projects__summary-heading {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 5vw, 4.5rem);
+  line-height: 0.92;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: var(--white);
+}
+
+.projects__summary-intro {
+  font-family: var(--font-condensed);
+  font-size: clamp(1rem, 1.3vw, 1.2rem);
+  line-height: 1.6;
+  color: rgba(240, 237, 228, 0.7);
+  max-width: 480px;
+  font-weight: 300;
+}
+
+.projects__summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 5rem;
+}
+
+.summary-card {
+  background: rgba(14, 14, 14, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  padding: 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  transition: border-color 0.3s ease, transform 0.3s ease, background 0.3s ease;
+}
+
+.summary-card:hover {
+  border-color: rgba(180, 255, 0, 0.3);
+  background: rgba(20, 20, 20, 0.7);
+  transform: translateY(-3px);
+}
+
+.summary-card__num {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  letter-spacing: 0.05em;
+  color: var(--lime);
+  line-height: 1;
+}
+
+.summary-card__title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: -0.005em;
+  color: var(--white);
+  margin: 0.25rem 0 0.5rem;
+}
+
+.summary-card__desc {
+  font-family: var(--font-condensed);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: rgba(240, 237, 228, 0.72);
+  font-weight: 300;
+}
+
+.summary-card__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-top: 0.5rem;
+  padding: 0;
+}
+
+.summary-card__list li {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: rgba(240, 237, 228, 0.78);
+  padding-left: 1.1rem;
+  position: relative;
+}
+
+.summary-card__list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 8px;
+  height: 1px;
+  background: var(--lime);
+}
+
+.summary-card__list strong {
+  color: var(--lime);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.projects__summary-tech {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 3rem;
+}
+
+.projects__summary-tech-eyebrow {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 1rem;
+}
+
+.projects__summary-tech-desc {
+  font-family: var(--font-condensed);
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  color: rgba(240, 237, 228, 0.85);
+  margin-bottom: 2rem;
+  font-weight: 300;
+}
+
+.projects__summary-tech-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 3rem;
+}
+
+.tech-tier {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.25rem 1.5rem;
+  background: rgba(14, 14, 14, 0.5);
+  border-left: 2px solid var(--lime);
+}
+
+.tech-tier__label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gray);
+}
+
+.tech-tier__detail {
+  font-family: var(--font-condensed);
+  font-size: 0.95rem;
+  color: rgba(240, 237, 228, 0.85);
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+.projects__summary-closing {
+  font-family: var(--font-condensed);
+  font-size: clamp(1rem, 1.25vw, 1.15rem);
+  line-height: 1.6;
+  color: rgba(240, 237, 228, 0.65);
+  max-width: 760px;
+  font-style: italic;
+  font-weight: 300;
+}
+
 /* ===== SKILLS ===== */
 .skills {
   padding: 10rem 3rem;
@@ -1298,6 +1482,26 @@ body {
     top: 4%;
     right: 4%;
   }
+  .projects__summary { padding: 4rem 1.5rem 3rem; }
+  .projects__summary-header {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+    align-items: start;
+  }
+  .projects__summary-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-bottom: 3rem;
+  }
+  .summary-card { padding: 1.5rem 1.25rem; }
+  .summary-card__title { font-size: 1.3rem; }
+  .summary-card__list li { font-size: 0.72rem; }
+  .projects__summary-tech-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .tech-tier { padding: 1rem 1.25rem; }
   /* On mobile, the card height is JS-controlled so it can animate when flipped. */
   .project-card {
     aspect-ratio: auto;
