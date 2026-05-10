@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 
 const TEXT =
-  'I craft high-performance web applications that push the boundaries of what\'s possible in a browser. With 10+ years of experience, I specialize in building seamless user experiences from pixel-perfect interfaces to scalable backend architectures.';
+  'I craft high-performance web applications that push the boundaries of what\'s possible in a browser. With years of experience, I specialize in building seamless user experiences from pixel-perfect interfaces to scalable backend architectures.';
 
 export default function About() {
   const sectionRef = useRef(null);
