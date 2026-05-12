@@ -577,8 +577,8 @@ body {
 
 .project-card__face--back {
   transform: rotateY(180deg) translateZ(0);
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
   padding: 2rem;
   background: linear-gradient(160deg, rgba(6, 6, 6, 0.95) 0%, rgba(15, 15, 15, 0.98) 100%);
   border: 1px solid rgba(180, 255, 0, 0.25);
@@ -594,14 +594,69 @@ body {
   margin: 0.75rem 0 1rem;
 }
 
+.project-card__desc-wrap {
+  position: relative;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 10px;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
 .project-card__desc {
   font-family: var(--font-body, inherit);
   font-size: clamp(0.85rem, 1vw, 0.95rem);
   line-height: 1.55;
   color: rgba(255, 255, 255, 0.82);
   margin: 0;
-  flex: 1;
-  overflow: hidden;
+  min-height: 0;
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+
+.project-card__desc::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.project-card__scrollbar {
+  position: relative;
+  width: 10px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 5px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+}
+
+.project-card__desc-wrap.has-overflow .project-card__scrollbar {
+  opacity: 1;
+}
+
+.project-card__scrollbar-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(180, 255, 0, 0.75);
+  border-radius: 5px;
+  min-height: 30px;
+  cursor: grab;
+  transition: background 0.15s ease;
+  will-change: transform, height;
+}
+
+.project-card__scrollbar-thumb:hover {
+  background: rgba(180, 255, 0, 0.9);
+}
+
+.project-card__scrollbar-thumb.is-dragging {
+  background: rgba(180, 255, 0, 1);
+  cursor: grabbing;
 }
 
 .project-card__back-meta {
@@ -1511,7 +1566,9 @@ body {
     margin: 0.4rem 0 0.6rem;
   }
   .project-card__face--back { padding: 1.25rem; }
-  .project-card__desc { font-size: 0.78rem; line-height: 1.4; overflow: visible; flex: 0 0 auto; }
+  .project-card__desc { font-size: 0.78rem; line-height: 1.4; overflow: visible; height: auto; }
+  .project-card__desc-wrap { display: block; }
+  .project-card__scrollbar { display: none; }
   .project-card__meta { display: none; }
   .project-card__preview {
     width: 86.4%;

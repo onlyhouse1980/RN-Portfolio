@@ -105,12 +105,126 @@ export const PROJECTS = [
     icon: '🔗',
     fallbackImage: '/handywrap.png',
   },
+  {
+    num: '11',
+    title: 'Learn Next.Js\nNext.Js',
+    tags: ['Next.Js', 'Three.js', 'Gsap'],
+    desc: 'Next Js learning resource. Lessons, exercises and lesson quizzes to help you learn Next.Js. I built a comprehensive learning platform for Next.Js, featuring interactive coding challenges, real-time feedback, and a dynamic curriculum that adapts to the user\'s progress. The site includes a custom-built code editor with integrated Next.Js support, allowing users to practice and apply their skills in a hands-on environment. The graphics and animations are powered by Three.js, and Gsap, creating an engaging and visually appealing learning experience that makes mastering Next.Js both fun and effective.',
+    year: '2026',
+    link: 'https://next-learn-delta-two.vercel.app',
+    icon: '🔗',
+    fallbackImage: '/nextlearn.png',
+  },
+  {
+    num: '12',
+    title: 'PDFKit\nNext.Js',
+    tags: ['Next.Js', 'PDF-Lib', 'React-PDF'],
+    desc: 'Browser-based PDF Toolkit\nA privacy-first, all-in-one web app offering 20+ PDF tools that run entirely in the user browser — no files are ever uploaded to a server. Users can merge, split, compress, rotate, crop, reorder, and delete pages; convert between PDF and JPG; extract text; add watermarks, page numbers, annotations, and signatures; edit text; password-protect or unlock documents; and view file info.\n\nWhy it stands out\n- Zero-server architecture —every PDF operation happens client-side, so sensitive documents never leave the users device.\n- 20+ feature routes organized as discrete tools under a single, consistent UI.\n- Instant performance — no upload/download round trips; processing is bounded only by the user hardware.\n\nHighlights for recruiters/clients\n- Built on the latest React 19 and Next.js 16 App Router — modern Server Component architecture with client-side computation where it matters.\n- Demonstrates strong grasp of binary file manipulation, browser APIs (File, Blob, ArrayBuffer), and performance-sensitive UI work.\n- Privacy-by-design: a deliberate architectural choice, not an afterthought.',
+    year: '2026',
+    link: 'https://pdf-online-editor-mu.vercel.app',
+    icon: '🔗',
+    fallbackImage: '/pdfkit.png',
+  },
 ];
 // ─────────────────────────────────────────────────────────────────────────────
 
 function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
   const cardRef = useRef(null);
   const backRef = useRef(null);
+  const descRef = useRef(null);
+  const trackRef = useRef(null);
+  const thumbRef = useRef(null);
+  const isDraggingRef = useRef(false);
+  const [hasOverflow, setHasOverflow] = useState(false);
+
+  useEffect(() => {
+    const desc = descRef.current;
+    const track = trackRef.current;
+    const thumb = thumbRef.current;
+    if (!desc || !track || !thumb) return;
+
+    const update = () => {
+      const ratio = desc.clientHeight / desc.scrollHeight;
+      const overflowing = ratio < 0.999;
+      setHasOverflow(overflowing);
+      if (!overflowing) return;
+      const trackH = track.clientHeight;
+      const thumbH = Math.max(30, trackH * ratio);
+      const maxScroll = desc.scrollHeight - desc.clientHeight;
+      const scrollRatio = maxScroll > 0 ? desc.scrollTop / maxScroll : 0;
+      const thumbTop = scrollRatio * (trackH - thumbH);
+      thumb.style.height = `${thumbH}px`;
+      thumb.style.transform = `translateY(${thumbTop}px)`;
+    };
+
+    update();
+
+    desc.addEventListener('scroll', update, { passive: true });
+    const ro = new ResizeObserver(update);
+    ro.observe(desc);
+
+    let dragging = false;
+    let startY = 0;
+    let startScroll = 0;
+
+    const onThumbDown = (e) => {
+      dragging = true;
+      isDraggingRef.current = true;
+      startY = e.clientY;
+      startScroll = desc.scrollTop;
+      thumb.classList.add('is-dragging');
+      e.preventDefault();
+      e.stopPropagation();
+    };
+
+    const onMove = (e) => {
+      if (!dragging) return;
+      const dy = e.clientY - startY;
+      const trackH = track.clientHeight;
+      const thumbH = thumb.clientHeight;
+      const maxScroll = desc.scrollHeight - desc.clientHeight;
+      const scrollDelta = (dy / (trackH - thumbH)) * maxScroll;
+      desc.scrollTop = startScroll + scrollDelta;
+    };
+
+    const onUp = (e) => {
+      if (!dragging) return;
+      dragging = false;
+      isDraggingRef.current = false;
+      thumb.classList.remove('is-dragging');
+      const card = cardRef.current;
+      if (card && e) {
+        const r = card.getBoundingClientRect();
+        const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+        if (!inside) setFlippedNum((prev) => (prev === project.num ? null : prev));
+      }
+    };
+
+    const onTrackClick = (e) => {
+      if (e.target === thumb) return;
+      const rect = track.getBoundingClientRect();
+      const clickY = e.clientY - rect.top;
+      const thumbH = thumb.clientHeight;
+      const targetThumbTop = Math.max(0, Math.min(rect.height - thumbH, clickY - thumbH / 2));
+      const maxScroll = desc.scrollHeight - desc.clientHeight;
+      desc.scrollTop = (targetThumbTop / (rect.height - thumbH)) * maxScroll;
+      e.stopPropagation();
+    };
+
+    thumb.addEventListener('mousedown', onThumbDown);
+    track.addEventListener('mousedown', onTrackClick);
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
+
+    return () => {
+      desc.removeEventListener('scroll', update);
+      ro.disconnect();
+      thumb.removeEventListener('mousedown', onThumbDown);
+      track.removeEventListener('mousedown', onTrackClick);
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+    };
+  }, [project.desc, isFlipped]);
 
   useEffect(() => {
     const card = cardRef.current;
@@ -193,7 +307,7 @@ function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
   };
 
   const handlePointerLeave = (e) => {
-    if (e.pointerType === 'mouse') {
+    if (e.pointerType === 'mouse' && !isDraggingRef.current) {
       setFlippedNum((prev) => (prev === project.num ? null : prev));
     }
   };
@@ -251,7 +365,12 @@ function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
               <span key={i} style={{ display: 'block' }}>{line}</span>
             ))}
           </h3>
-          <p className="project-card__desc">{project.desc}</p>
+          <div className={`project-card__desc-wrap${hasOverflow ? ' has-overflow' : ''}`}>
+            <p className="project-card__desc" ref={descRef} style={{ whiteSpace: 'pre-line' }}>{project.desc}</p>
+            <div className="project-card__scrollbar" ref={trackRef}>
+              <div className="project-card__scrollbar-thumb" ref={thumbRef} />
+            </div>
+          </div>
           <div className="project-card__back-meta">
             <div className="project-card__tags">
               {project.tags.map((tag) => (
