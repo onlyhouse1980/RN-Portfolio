@@ -1565,10 +1565,17 @@ body {
     font-size: clamp(1rem, 4.2vw, 1.4rem);
     margin: 0.4rem 0 0.6rem;
   }
-  .project-card__face--back { padding: 1.25rem; }
+  .project-card__face--back {
+    display: block;
+    padding: 1.25rem;
+  }
   .project-card__desc { font-size: 0.78rem; line-height: 1.4; overflow: visible; height: auto; }
   .project-card__desc-wrap { display: block; }
   .project-card__scrollbar { display: none; }
+  .project-card__back-meta {
+    margin-top: 1.5rem;
+    align-items: flex-start;
+  }
   .project-card__meta { display: none; }
   .project-card__preview {
     width: 86.4%;
