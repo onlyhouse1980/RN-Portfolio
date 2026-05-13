@@ -1368,6 +1368,42 @@ body {
   color: var(--gray);
 }
 
+.closing-quote__audio {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  padding: 0.65rem 1.25rem 0.65rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--lime);
+  text-decoration: none;
+  border: 1px solid rgba(180, 255, 0, 0.4);
+  background: rgba(180, 255, 0, 0.04);
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.closing-quote__audio:hover {
+  background: var(--lime);
+  color: var(--bg);
+  border-color: var(--lime);
+  transform: translateY(-2px);
+}
+
+.closing-quote__audio-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  font-size: 0.55rem;
+  padding-left: 2px;
+}
+
 /* ===== CONTACT ===== */
 .contact {
   padding: 10rem 3rem;

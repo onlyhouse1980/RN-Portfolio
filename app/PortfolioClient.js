@@ -79,6 +79,15 @@ function PortfolioBody() {
             <p>{t.closing.quote}</p>
           </blockquote>
           <span className="closing-quote__attribution">— {t.closing.attribution}</span>
+          <a
+            className="closing-quote__audio"
+            href="https://rn-portfolio-nine.vercel.app/Ryan_Nyberg_s_Technical_Thriller_in_Web_Engineering.m4a"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span className="closing-quote__audio-icon" aria-hidden="true">▶</span>
+            <span>{t.closing.audioLabel}</span>
+          </a>
         </section>
 
         <Contact />
