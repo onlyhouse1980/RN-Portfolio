@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CustomCursor from '../components/CustomCursor';
 import PlasmaGrid from '../components/PlasmaGrid';
 import Navbar from '../components/Navbar';
@@ -14,6 +14,23 @@ import { LanguageProvider, useLang } from '../lib/i18n';
 
 function PortfolioBody() {
   const { t } = useLang();
+  const [audioOpen, setAudioOpen] = useState(false);
+  const audioRef = useRef(null);
+
+  const handleAudioClick = (e) => {
+    e.preventDefault();
+    setAudioOpen(true);
+    requestAnimationFrame(() => {
+      const el = audioRef.current;
+      if (el) {
+        el.currentTime = 0;
+        const playPromise = el.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+          playPromise.catch(() => {});
+        }
+      }
+    });
+  };
 
   // Lenis smooth scroll — initialised once at the client root
   useEffect(() => {
@@ -81,13 +98,27 @@ function PortfolioBody() {
           <span className="closing-quote__attribution">— {t.closing.attribution}</span>
           <a
             className="closing-quote__audio"
-            href="https://rn-portfolio-nine.vercel.app/Ryan_Nyberg_s_Technical_Thriller_in_Web_Engineering.m4a"
+            href="/Ryan_Nyberg_s_Technical_Thriller_in_Web_Engineering.m4a"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={handleAudioClick}
+            aria-expanded={audioOpen}
+            aria-controls="closing-quote-player"
           >
             <span className="closing-quote__audio-icon" aria-hidden="true">▶</span>
             <span>{t.closing.audioLabel}</span>
           </a>
+          {audioOpen && (
+            <audio
+              id="closing-quote-player"
+              ref={audioRef}
+              className="closing-quote__player"
+              src="/Ryan_Nyberg_s_Technical_Thriller_in_Web_Engineering.m4a"
+              controls
+              autoPlay
+              preload="auto"
+            />
+          )}
         </section>
 
         <Contact />

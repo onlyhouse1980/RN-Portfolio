@@ -1404,6 +1404,18 @@ body {
   padding-left: 2px;
 }
 
+.closing-quote__player {
+  width: min(520px, 100%);
+  margin-top: 0.5rem;
+  border-radius: 999px;
+  outline: none;
+  color-scheme: dark;
+}
+
+.closing-quote__player::-webkit-media-controls-panel {
+  background: rgba(14, 14, 14, 0.85);
+}
+
 /* ===== CONTACT ===== */
 .contact {
   padding: 10rem 3rem;
