@@ -328,7 +328,7 @@ function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
 
   return (
     <div
-      className={`project-card${isFlipped ? ' project-card--flipped' : ''}`}
+      className={`project-card${isFlipped ? ' project-card--flipped' : ''}${project.criticQuote ? ' project-card--has-critic' : ''}`}
       ref={cardRef}
       style={{ opacity: 0 }}
       onPointerEnter={handlePointerEnter}
@@ -371,6 +371,14 @@ function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
           </div>
         </div>
         <div className="project-card__face project-card__face--back" ref={backRef}>
+          {project.criticQuote && (
+            <aside className="project-card__critic" aria-label={project.criticLabel || 'Critic quote'}>
+              <span className="project-card__critic-label">{project.criticLabel || 'Critic’s Quote'}</span>
+              <blockquote className="project-card__critic-quote">
+                {project.criticQuote}
+              </blockquote>
+            </aside>
+          )}
           <span className="project-card__num">{project.num} — {project.year}</span>
           <h3 className="project-card__back-title">
             {project.title.split('\n').map((line, i) => (
@@ -418,6 +426,8 @@ export default function Projects() {
       ...p,
       title,
       desc: localized.desc || p.desc,
+      criticQuote: localized.criticQuote || null,
+      criticLabel: localized.criticLabel || null,
       viewLabel: t.projects.viewLabel(title.replace('\n', ' ')),
     };
   });

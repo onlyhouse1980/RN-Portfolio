@@ -164,17 +164,26 @@ export default function Hero() {
       <div className="hero__content" ref={titleRef}>
         <p className="hero__tag">{t.hero.tag}</p>
 
-        <h1 className="hero__title">
-          <span className="hero__title-line">
-            <span className="hero__title-inner">{t.hero.title[0]}</span>
-          </span>
-          <span className="hero__title-line">
-            <span className="hero__title-inner accent">{t.hero.title[1]}</span>
-          </span>
-          <span className="hero__title-line">
-            <span className="hero__title-inner">{t.hero.title[2]}</span>
-          </span>
-        </h1>
+        <div className="hero__title-row">
+          <h1 className="hero__title">
+            <span className="hero__title-line">
+              <span className="hero__title-inner">{t.hero.title[0]}</span>
+            </span>
+            <span className="hero__title-line">
+              <span className="hero__title-inner accent">{t.hero.title[1]}</span>
+            </span>
+            <span className="hero__title-line">
+              <span className="hero__title-inner">{t.hero.title[2]}</span>
+            </span>
+          </h1>
+
+          <aside className="hero__quote" aria-label={t.hero.quote.eyebrow}>
+            <span className="hero__quote-eyebrow">{t.hero.quote.eyebrow}</span>
+            <blockquote className="hero__quote-body">
+              <p>{t.hero.quote.body}</p>
+            </blockquote>
+          </aside>
+        </div>
 
         <div className="hero__bottom">
           <p className="hero__subtitle" ref={subtitleRef} style={{ transform: 'translateY(20px)' }}>

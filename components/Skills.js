@@ -4,12 +4,12 @@ import { useEffect, useRef } from 'react';
 import { useLang } from '../lib/i18n';
 
 const SKILLS = [
-  { name: 'React / Next.js', pct: 95 },
-  { name: 'Node.js / Express', pct: 88 },
-  { name: 'TypeScript', pct: 90 },
-  { name: 'PostgreSQL / MongoDB', pct: 82 },
-  { name: 'AWS / DevOps', pct: 75 },
-  { name: 'UI/UX & Animation', pct: 85 },
+  { name: 'React / Next.js', pct: 95, label: 'Expert' },
+  { name: 'Node.js / Express', pct: 88, label: 'Expert' },
+  { name: 'TypeScript', pct: 90, label: 'Expert' },
+  { name: 'PostgreSQL / MongoDB', pct: 82, label: 'Expert' },
+  { name: 'AWS / DevOps', pct: 75, label: 'Advanced' },
+  { name: 'UI/UX & Animation', pct: 85, label: 'Expert' },
 ];
 
 const TECH = [
@@ -124,7 +124,7 @@ export default function Skills() {
               <div key={s.name} className="skill-item">
                 <div className="skill-item__header">
                   <span className="skill-item__name">{s.name}</span>
-                  <span className="skill-item__pct">{s.pct}%</span>
+                  <span className="skill-item__pct">{s.label}</span>
                 </div>
                 <div className="skill-item__track">
                   <div

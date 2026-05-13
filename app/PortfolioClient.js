@@ -72,6 +72,15 @@ function PortfolioBody() {
         </div>
 
         <Skills />
+
+        <section className="closing-quote" aria-label={t.closing.eyebrow}>
+          <blockquote className="closing-quote__body">
+            <span className="closing-quote__mark" aria-hidden="true">“</span>
+            <p>{t.closing.quote}</p>
+          </blockquote>
+          <span className="closing-quote__attribution">— {t.closing.attribution}</span>
+        </section>
+
         <Contact />
       </main>
 
