@@ -23,14 +23,15 @@ The drink library includes recipes in cl, glassware guidance, technique tags, ga
     num: '02',
     title: 'OBCG\nPortal',
     tags: ['Next.Js', 'MongoDB', 'Node'],
-    desc: `Community water-utility portal for member transparency, billing, and usage management.
-The platform gives residents a centralized dashboard to monitor water usage, review billing details, access annual water-quality reports, view governance records, and stay informed about utility updates.
+    desc: `Orchard Beach Community Group website with public documents, member water-usage tools, and private billing/admin features. The obcg.org platform combines a public community information site with authenticated customer tools for water-meter lookup, billing visibility, and spreadsheet-style meter-reading administration.
 
-For administrators, it functions as a customer billing and management system with customer histories, meter readings, billing records, account activity, and community-wide usage analytics.
+The public side provides Orchard Beach community content, governance records, newsletters, bylaws, permits, consumer confidence reports, water-system documents, historical notices, videos, contact/map pages, and a large meeting-minutes archive. Navigation is centralized through src/components/NavBar.js.
 
-A core feature is usage-pattern leak detection: by comparing historical readings and identifying abnormal consumption spikes, the executive team can detect possible leaks before they are physically visible, notify customers quickly, reduce water loss, and help prevent unexpected high bills.
+The member side includes email/password signup and login, an authenticated dashboard showing recent water usage and overage charges, meter lookup by serial number, usage calculations with a speedometer-style display, billing lookup by customer last name, charts for usage and billed amounts, and an admin spreadsheet editor backed by MongoDB.
 
-Overall, the portal replaces manual processes with structured data, improves transparency, supports conservation, and gives both members and leadership a clearer view of water usage across the community.`,
+Built with Next.js 16 App Router, React 19.2, JavaScript/JSX, TypeScript, MongoDB Atlas, Mongoose, NextAuth v4 Credentials, JWT sessions, bcrypt/bcryptjs, Resend, Recharts, MUI, Bootstrap, CSS Modules, Sass, Framer Motion, FontAwesome, Lucide, React Icons, Cloudinary, Next Image, and App Router API route handlers, the site mixes static public documents/media with dynamic authenticated customer and admin workflows.
+
+MongoDB powers meter readings, dashboard data, lookup tools, spreadsheet edits, authentication, signup, login, and password-reset flows, with bundled fallback datasets used when database access is unavailable.`,
     year: '2026',
     link: 'https://obcg-modern.vercel.app',
     icon: '📊',
