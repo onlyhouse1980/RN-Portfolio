@@ -131,8 +131,7 @@ Built with Next.js 16, React 19, TypeScript 6, Three.js/WebGL, custom GLSL shade
     num: '10',
     title: 'HandyWrap\nE-Commerce',
     tags: ['Radix', 'Zod', 'Prisma'],
-    desc: `Custom phone-case e-commerce platform with a live product configurator and Stripe checkout.
-The app lets customers upload artwork, position it on a realistic phone-case preview, resize/crop the design, choose phone model, material, finish, and color, then complete payment through Stripe and receive a branded confirmation email.
+    desc: `Custom phone-case e-commerce platform with a live product configurator and Stripe checkout. The app lets customers upload artwork, position it on a realistic phone-case preview, resize/crop the design, choose phone model, material, finish, and color, then complete payment through Stripe and receive a branded confirmation email.
 
 Built with Next.js 14 App Router, React 18, TypeScript, Tailwind CSS, shadcn/ui, Radix UI, Framer Motion, Prisma, PostgreSQL, Zod, TanStack Query, Sharp, Kinde Auth, Stripe, UploadThing, Resend, and React Email, the platform includes authenticated checkout, webhook-driven order handling, transactional emails, and server-side image processing.
 
