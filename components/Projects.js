@@ -119,7 +119,9 @@ interactive component instead of pulling in a library.`,
     num: '09',
     title: 'TSLearn\nTypescript',
     tags: ['Typescript', 'Three.js', 'WebGL'],
-    desc: 'Next Js Typescript learning resource. I built a comprehensive learning platform for TypeScript, featuring interactive coding challenges, real-time feedback, and a dynamic curriculum that adapts to the user\'s progress. The site includes a custom-built code editor with integrated TypeScript support, allowing users to practice and apply their skills in a hands-on environment. The graphics and animations are powered by Three.js, and WebGL, creating an engaging and visually appealing learning experience that makes mastering TypeScript both fun and effective.',
+    desc: `TS Learn App is an interactive TypeScript learning platform with 35 guided lessons covering fundamentals, intermediate concepts, advanced type patterns, and applied TypeScript with WebGL. Each lesson combines animated 3D visuals, syntax-highlighted examples, JavaScript vs. TypeScript comparisons, hands-on exercises, checkpoint quizzes, and saved progress.
+
+Built with Next.js 16, React 19, TypeScript 6, Three.js/WebGL, custom GLSL shaders, GSAP, PWA support, localStorage, custom code highlighting, custom exercise validation, and ESLint with Next.js Core Web Vitals.`,
     year: '2026',
     link: 'https://ts-learn-lac.vercel.app/',
     icon: '🔗',
@@ -129,7 +131,12 @@ interactive component instead of pulling in a library.`,
     num: '10',
     title: 'HandyWrap\nE-Commerce',
     tags: ['Radix', 'Zod', 'Prisma'],
-    desc: 'HandyWrap is a specialized e-commerce platform built to deliver a "pixel-perfect" user experience for creating personalized, high-quality phone cases. Database Management (Prisma): I utilized Prisma as the ORM to manage the applications scalable backend architecture. Payment Processing (Stripe): To facilitate secure, production-ready transactions, I integrated Stripe to manage the checkout flow. UI & Validation (Radix & Zod).',
+    desc: `Custom phone-case e-commerce platform with a live product configurator and Stripe checkout.
+The app lets customers upload artwork, position it on a realistic phone-case preview, resize/crop the design, choose phone model, material, finish, and color, then complete payment through Stripe and receive a branded confirmation email.
+
+Built with Next.js 14 App Router, React 18, TypeScript, Tailwind CSS, shadcn/ui, Radix UI, Framer Motion, Prisma, PostgreSQL, Zod, TanStack Query, Sharp, Kinde Auth, Stripe, UploadThing, Resend, and React Email, the platform includes authenticated checkout, webhook-driven order handling, transactional emails, and server-side image processing.
+
+It also includes an admin dashboard for viewing orders, managing fulfillment, and updating order status, plus a responsive marketing site with reviews, social proof, mobile navigation, animations, upload flows, toast notifications, and a polished Apple-inspired configuration experience.`,
     year: '2025',
     link: 'https://casecobra-ihyo.vercel.app/',
     icon: '🔗',
