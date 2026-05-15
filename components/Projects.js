@@ -58,7 +58,17 @@ AI-generated outputs are strictly framed as internal attorney work drafts, not c
     num: '04',
     title: 'Launchpad\nGemini Powered SaaS',
     tags: ['Next.Js', 'Supabase', 'SaaS'],
-    desc: 'A high-velocity, full-stack SaaS boilerplate designed to deploy production-ready applications in minutes. The core architecture leverages Gemini 3.0 Pro to provide advanced AI capabilities across a variety of specialized industry modules. I implemented a robust Stripe integration to handle complex subscription models—including Starter, Pro, and Unlimited tiers—allowing for immediate monetization upon deployment.',
+    desc: `LaunchPad is a SaaS template deployment platform for creating Project Vaults, storing server-side credentials, and downloading deployable full-stack SaaS templates. It uses Next.js App Router, React, TypeScript, Tailwind CSS, Supabase Auth/Postgres, Stripe Checkout/Webhooks, JSZip, and vault-managed AI/provider keys.
+
+Its activation system has three enforcement layers:
+
+1. **Build-time check**: downloaded templates run \`scripts/check-activation.mjs\` before deployment and call \`POST /api/activation/activate\`.
+2. **Runtime check**: deployed apps call \`POST /api/activation/check\` from the server layout once per day.
+3. **Remote vault dependency**: server-side services call \`POST /api/vault\` to retrieve Stripe, Gemini, or other secrets only after activation passes.
+
+LaunchPad verifies the license key, account status, vault ownership, template match, and deployment record. If the account becomes invalid, expired, suspended, revoked, or unreachable in fail-closed mode, the deployed template renders an offline page and stops receiving vault credentials.
+
+Because users download source code, activation is not fully tamper-proof. The real enforcement comes from making valuable server-side services depend on LaunchPad-controlled vault access.`,
     year: '2025',
     link: 'https://saas-boilerplate-xi-rose.vercel.app',
     icon: '🌐',
