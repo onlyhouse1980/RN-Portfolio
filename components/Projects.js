@@ -401,7 +401,7 @@ function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
             <Image
               className="project-card__preview-image"
               src={project.fallbackImage}
-              alt={`${project.title.replace('\n', ' ')} preview`}
+              alt={`Screenshot of ${project.title.replace('\n', ' ')}`}
               fill
               loading="lazy"
               sizes="(max-width: 900px) 86vw, 36vw"
