@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { useLang } from '../lib/i18n';
 
@@ -397,11 +398,13 @@ function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
             </div>
           </div>
           <div className="project-card__preview">
-            <img
+            <Image
               className="project-card__preview-image"
               src={project.fallbackImage}
               alt={`${project.title.replace('\n', ' ')} preview`}
+              fill
               loading="lazy"
+              sizes="(max-width: 900px) 86vw, 36vw"
             />
           </div>
         </div>
