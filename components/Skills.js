@@ -21,6 +21,12 @@ const TECH = [
   'React Native', 'Framer Motion', 'Three.js', 'WebGL',
 ];
 
+/**
+ * Skills section component.
+ * Displays expertise bars and technology badges with staggered entry animations.
+ *
+ * @returns {JSX.Element} The Skills section.
+ */
 export default function Skills() {
   const sectionRef = useRef(null);
   const barsRef = useRef(null);

@@ -3,7 +3,12 @@
 import { useEffect, useRef } from 'react';
 import { useLang } from '../lib/i18n';
 
-// Particle system for background
+/**
+ * Particle background system for the Hero section.
+ * Renders floating, connecting particles using an HTML5 Canvas.
+ *
+ * @returns {JSX.Element} The background canvas element.
+ */
 function ParticleCanvas() {
   const canvasRef = useRef(null);
 
@@ -88,6 +93,13 @@ function ParticleCanvas() {
   );
 }
 
+/**
+ * Hero section component.
+ * Serves as the landing view with animated titles, parallax effects,
+ * and a canvas-based particle background.
+ *
+ * @returns {JSX.Element} The Hero section.
+ */
 export default function Hero() {
   const heroRef = useRef(null);
   const titleRef = useRef(null);

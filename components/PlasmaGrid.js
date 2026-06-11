@@ -74,6 +74,13 @@ void main() {
 }
 `;
 
+/**
+ * Background Plasma Grid component.
+ * Renders a full-screen WebGL canvas with an interactive shader
+ * that responds to cursor movement.
+ *
+ * @returns {JSX.Element} The full-screen WebGL canvas element.
+ */
 export default function PlasmaGrid() {
   const canvasRef = useRef(null);
 

@@ -3,6 +3,12 @@
 import { useEffect, useRef } from 'react';
 import { useLang } from '../lib/i18n';
 
+/**
+ * About section component.
+ * Displays personal background and animated statistics using GSAP.
+ *
+ * @returns {JSX.Element} The About section.
+ */
 export default function About() {
   const sectionRef = useRef(null);
   const wordsRef = useRef(null);
@@ -15,6 +21,8 @@ export default function About() {
       const { gsap } = await import('gsap');
       const { ScrollTrigger } = await import('gsap/ScrollTrigger');
       gsap.registerPlugin(ScrollTrigger);
+
+      if (!headingRef.current) return;
 
       gsap.fromTo(
         headingRef.current,

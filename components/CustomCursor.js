@@ -2,6 +2,13 @@
 
 import { useEffect, useRef } from 'react';
 
+/**
+ * Custom cursor component.
+ * Replaces the default browser cursor with a stylized dot and a trailing follower.
+ * Adds hover states when interacting with clickable elements.
+ *
+ * @returns {JSX.Element} The custom cursor DOM nodes.
+ */
 export default function CustomCursor() {
   const cursorRef = useRef(null);
   const followerRef = useRef(null);

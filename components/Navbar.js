@@ -3,6 +3,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLang } from '../lib/i18n';
 
+/**
+ * Site Navigation bar.
+ * Handles responsive layout, language toggling, and smooth scroll links.
+ *
+ * @returns {JSX.Element} The fixed navigation header.
+ */
 export default function Navbar() {
   const navRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);

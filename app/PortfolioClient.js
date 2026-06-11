@@ -12,6 +12,13 @@ import Skills from '../components/Skills';
 import Contact from '../components/Contact';
 import { LanguageProvider, useLang } from '../lib/i18n';
 
+/**
+ * Main application body that ties together all portfolio sections.
+ * Implements Lenis for smooth scrolling and connects it to GSAP ScrollTrigger.
+ * Also handles the global audio player state.
+ *
+ * @returns {JSX.Element} The portfolio sections.
+ */
 function PortfolioBody() {
   const { t } = useLang();
   const [audioOpen, setAudioOpen] = useState(false);
@@ -133,6 +140,12 @@ function PortfolioBody() {
   );
 }
 
+/**
+ * Client-side entry point for the portfolio.
+ * Wraps the entire application with the LanguageProvider to supply translation context.
+ *
+ * @returns {JSX.Element} The wrapped PortfolioBody.
+ */
 export default function PortfolioClient() {
   return (
     <LanguageProvider>

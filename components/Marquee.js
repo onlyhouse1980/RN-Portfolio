@@ -1,5 +1,11 @@
 'use client';
 
+/**
+ * Infinite scrolling Marquee component.
+ * Displays a continuous loop of technologies and skills.
+ *
+ * @returns {JSX.Element} The animated marquee strip.
+ */
 export default function Marquee() {
   const items = [
     { text: 'Next.js', symbol: '✦' },

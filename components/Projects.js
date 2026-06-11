@@ -4,7 +4,10 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { useLang } from '../lib/i18n';
 
-// ─── YOUR PROJECTS — Edit this array to customize ────────────────────────────
+/**
+ * Static configuration array for the portfolio projects.
+ * @type {Array<{ num: string, title: string, tags: string[], desc: string, year: string, link: string, icon: string, fallbackImage: string }>}
+ */
 export const PROJECTS = [
   {
     num: '01',
@@ -79,7 +82,7 @@ Because users download source code, activation is not fully tamper-proof. The re
   },
   {
     num: '06',
-    title: 'Can We Talk?\nAI Assisted Commmunication Engine',
+    title: 'Can We Talk?\nAI Assisted Communication Engine',
     tags: ['Websockets', 'Gemini', 'Multi-Chat'],
     desc: 'AI-Assisted Communication\n\nA real-time, two-person chat app that acts as a friendly third party in difficult conversations. Each session pairs a Shared Space where both partners talk together with an AI mediator ("Dr. Aidon") that intervenes only when needed — to de-escalate, defuse manipulative language, or unstick stalled exchanges — and a Private Space where each user can workshop their thoughts one-on-one with the AI before saying them out loud. Sessions are spun up instantly and shared via QR code or link, with live typing indicators, partner-joined toasts, and full i18n in English, Spanish, and German.\n\nStack\n- Frontend: Next.js 15 (App Router), React 19, Tailwind CSS v4\n- Realtime + Auth: Firebase Firestore (live message, presence, and typing-status streams) with anonymous Firebase Auth\n- AI: Google Gemini 2.0 Flash with carefully constrained prompts that let the model stay silent unless intervention helps\n- Extras: qrcode for session-sharing, Tone.js for join sounds, hardened Content-Security-Policy headers',
     year: '2025',
@@ -167,9 +170,9 @@ It also includes an admin dashboard for viewing orders, managing fulfillment, an
   },
   {
     num: '13',
-    title: 'Next-Practice-App',
-    tags: ['Next.Js', 'Learning'],
-    desc: 'A Next.Js hands on learning app.',
+    title: 'Next Practice',
+    tags: ['Next.js 16', 'Interactive', 'App Router'],
+    desc: 'Next Practice is an interactive, local Next.js 16 learning environment distributed as a standalone package. Designed for hands-on learners, it provides a unique side-by-side workflow where students fix intentionally incomplete or broken code in their IDE and instantly see the results in their browser. The app features 20 focused lessons covering essential Next.js App Router concepts—including dynamic routes, server actions, metadata, and optimistic updates. Its architecture ensures the dev server remains stable even when lesson files contain errors, ensuring an uninterrupted educational experience.',
     year: '2026',
     link: 'https://github.com/onlyhouse1980/NextPracticeApp',
     icon: '💻',
@@ -178,8 +181,8 @@ It also includes an admin dashboard for viewing orders, managing fulfillment, an
   {
     num: '14',
     title: 'Communiversity',
-    tags: ['Next.Js', 'Gemini', 'Learning'],
-    desc: 'A Next.Js study anything app. Name anything you want to learn about and Gemini will crate the entire course for you. Enroll in completely new courses, or enroll in a course already set up by another student.  In each lesson there is a Gemini AI Teacher you can ask any questions pertaining to that course, if you get stuck or just want a deeper explanation.',
+    tags: ['Next.js', 'Gemini', 'Learning'],
+    desc: 'A Next.js study-anything app. Name anything you want to learn about and Gemini will create the entire course for you. Enroll in completely new courses, or enroll in a course already set up by another student. In each lesson there is a Gemini AI Teacher you can ask any questions pertaining to that course, if you get stuck or just want a deeper explanation.',
     year: '2026',
     link: 'https://communiversity.vercel.app',
     icon: '🎓',
@@ -188,7 +191,19 @@ It also includes an admin dashboard for viewing orders, managing fulfillment, an
 ];
 // ─────────────────────────────────────────────────────────────────────────────
 
-function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
+/**
+ * Individual Project Card component with an interactive flip effect.
+ * Displays project overview on the front, and localized details/links on the back.
+ *
+ * @param {Object} props - The component props.
+ * @param {Object} props.project - The project data object (contains localized text).
+ * @param {number} props.index - The index of the project in the list.
+ * @param {boolean} props.isFlipped - Whether this specific card is currently flipped.
+ * @param {Function} props.setFlippedNum - State setter to control which card is flipped.
+ * @param {boolean} [props.priority] - If true, tells Next.js Image to eager load (LCP optimization).
+ * @returns {JSX.Element} The 3D flip card.
+ */
+function ProjectCard({ project, index, isFlipped, setFlippedNum, priority }) {
   const cardRef = useRef(null);
   const backRef = useRef(null);
   const descRef = useRef(null);
@@ -415,7 +430,8 @@ function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
               src={project.fallbackImage}
               alt={`Screenshot of ${project.title.replace('\n', ' ')}`}
               fill
-              loading="lazy"
+              priority={priority}
+              loading={priority ? undefined : "lazy"}
               sizes="(max-width: 900px) 86vw, 36vw"
             />
           </div>
@@ -464,6 +480,13 @@ function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
   );
 }
 
+/**
+ * The Projects section.
+ * Renders a grid of ProjectCard components, handling localization injections
+ * and GSAP ScrollTrigger entry animations.
+ *
+ * @returns {JSX.Element} The Projects section wrapper.
+ */
 export default function Projects() {
   const headerRef = useRef(null);
   const [flippedNum, setFlippedNum] = useState(null);
@@ -487,6 +510,8 @@ export default function Projects() {
       const { gsap } = await import('gsap');
       const { ScrollTrigger } = await import('gsap/ScrollTrigger');
       gsap.registerPlugin(ScrollTrigger);
+
+      if (!headerRef.current) return;
 
       gsap.fromTo(
         headerRef.current,
@@ -526,6 +551,7 @@ export default function Projects() {
             index={i}
             isFlipped={flippedNum === project.num}
             setFlippedNum={setFlippedNum}
+            priority={i < 2 || i === localizedProjects.length - 1}
           />
         ))}
       </div>

@@ -3,6 +3,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLang } from '../lib/i18n';
 
+/**
+ * Contact section component.
+ * Features an interactive contact modal form and GSAP-animated entry text.
+ * Uses a Next.js API route (`/api/contact`) to handle form submissions.
+ *
+ * @returns {JSX.Element} The Contact section and its modal.
+ */
 export default function Contact() {
   const sectionRef = useRef(null);
   const bigTextRef = useRef(null);
@@ -81,17 +88,30 @@ export default function Contact() {
     };
   }, [isModalOpen]);
 
+  /**
+   * Opens the contact modal and resets any previous form status.
+   */
   const handleOpenModal = () => {
     setIsModalOpen(true);
     setFormStatus('idle');
     setFormMessage('');
   };
 
+  /**
+   * Handles input changes in the contact form to update local state.
+   *
+   * @param {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} event - The input change event.
+   */
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((current) => ({ ...current, [name]: value }));
   };
 
+  /**
+   * Handles the form submission by sending data to the server API.
+   *
+   * @param {React.FormEvent} event - The form submission event.
+   */
   const handleSubmit = async (event) => {
     event.preventDefault();
     setFormStatus('submitting');

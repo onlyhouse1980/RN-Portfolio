@@ -1,5 +1,10 @@
 import './globals.css';
 
+/**
+ * Global SEO Metadata for the Next.js App Router.
+ * This configuration applies automatically to all routes unless overridden.
+ * @type {import('next').Metadata}
+ */
 export const metadata = {
   metadataBase: new URL('https://ryannyberg.com'), // Update with actual production domain
   title: {
@@ -45,6 +50,15 @@ export const metadata = {
   },
 };
 
+/**
+ * The RootLayout component acts as the global shell for the entire Next.js application.
+ * It is responsible for injecting global CSS, pre-loading essential Google Fonts,
+ * and wrapping all child routes inside the standard `<html>` and `<body>` tags.
+ *
+ * @param {Object} props - The component props.
+ * @param {React.ReactNode} props.children - The child components/pages to render inside the layout.
+ * @returns {JSX.Element} The rendered global HTML structure.
+ */
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
