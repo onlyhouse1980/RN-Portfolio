@@ -12,16 +12,13 @@
   --lime-dim: #8acc00;
   --red: #ff3c00;
   --white: #f0ede4;
-  --gray: #888880;
+  --gray: #a1a19a;
   --gray-dim: #333330;
-  --font-display: 'Bebas Neue', sans-serif;
-  --font-condensed: 'Barlow Condensed', sans-serif;
-  --font-mono: 'Space Mono', monospace;
 }
 
 html {
   scroll-behavior: auto; /* Let Lenis handle smooth scroll */
-  background: transparent;
+  background: var(--bg);
   color: var(--white);
   overflow-x: hidden;
   max-width: 100vw;
@@ -1724,7 +1721,7 @@ body {
   font-size: 0.6rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--gray-dim);
+  color: var(--gray);
   white-space: nowrap;
 }
 

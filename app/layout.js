@@ -1,4 +1,24 @@
 import './globals.css';
+import { Bebas_Neue, Space_Mono, Barlow_Condensed } from 'next/font/google';
+
+const bebasNeue = Bebas_Neue({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-display',
+});
+
+const spaceMono = Space_Mono({
+  weight: ['400', '700'],
+  style: ['normal', 'italic'],
+  subsets: ['latin'],
+  variable: '--font-mono',
+});
+
+const barlowCondensed = Barlow_Condensed({
+  weight: ['300', '400', '600', '700', '900'],
+  subsets: ['latin'],
+  variable: '--font-condensed',
+});
 
 /**
  * Global SEO Metadata for the Next.js App Router.
@@ -61,15 +81,7 @@ export const metadata = {
  */
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Barlow+Condensed:wght@300;400;600;700;900&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="en" className={`${bebasNeue.variable} ${spaceMono.variable} ${barlowCondensed.variable}`}>
       <body>{children}</body>
     </html>
   );
