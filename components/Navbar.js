@@ -85,6 +85,33 @@ export default function Navbar() {
         >
           DE
         </button>
+        <span className="navbar__lang-sep" aria-hidden="true">/</span>
+        <button
+          type="button"
+          className={`navbar__lang-btn${lang === 'es' ? ' navbar__lang-btn--active' : ''}`}
+          aria-pressed={lang === 'es'}
+          onClick={() => setLang('es')}
+        >
+          ES
+        </button>
+        <span className="navbar__lang-sep" aria-hidden="true">/</span>
+        <button
+          type="button"
+          className={`navbar__lang-btn${lang === 'fr' ? ' navbar__lang-btn--active' : ''}`}
+          aria-pressed={lang === 'fr'}
+          onClick={() => setLang('fr')}
+        >
+          FR
+        </button>
+        <span className="navbar__lang-sep" aria-hidden="true">/</span>
+        <button
+          type="button"
+          className={`navbar__lang-btn${lang === 'nl' ? ' navbar__lang-btn--active' : ''}`}
+          aria-pressed={lang === 'nl'}
+          onClick={() => setLang('nl')}
+        >
+          NL
+        </button>
       </div>
       <button
         type="button"

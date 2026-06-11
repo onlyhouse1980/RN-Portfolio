@@ -165,6 +165,26 @@ It also includes an admin dashboard for viewing orders, managing fulfillment, an
     icon: '🔗',
     fallbackImage: '/pdfkit.png',
   },
+  {
+    num: '13',
+    title: 'Next-Practice-App',
+    tags: ['Next.Js', 'Learning'],
+    desc: 'A Next.Js hands on learning app.',
+    year: '2026',
+    link: 'https://github.com/onlyhouse1980/NextPracticeApp',
+    icon: '💻',
+    fallbackImage: '/nextpractice.png',
+  },
+  {
+    num: '14',
+    title: 'Communiversity',
+    tags: ['Next.Js', 'Gemini', 'Learning'],
+    desc: 'A Next.Js study anything app. Name anything you want to learn about and Gemini will crate the entire course for you. Enroll in completely new courses, or enroll in a course already set up by another student.  In each lesson there is a Gemini AI Teacher you can ask any questions pertaining to that course, if you get stuck or just want a deeper explanation.',
+    year: '2026',
+    link: 'https://communiversity.vercel.app',
+    icon: '🎓',
+    fallbackImage: '/communiversity.png',
+  },
 ];
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -312,15 +332,15 @@ function ProjectCard({ project, index, isFlipped, setFlippedNum }) {
           ease: 'expo.out',
           scrollTrigger: isMobile
             ? {
-                trigger: card,
-                start: 'top bottom',
-                end: 'top center',
-                scrub: 0.5,
-              }
+              trigger: card,
+              start: 'top bottom',
+              end: 'top center',
+              scrub: 0.5,
+            }
             : {
-                trigger: card,
-                start: 'top 88%',
-              },
+              trigger: card,
+              start: 'top 88%',
+            },
         }
       );
     };

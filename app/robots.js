@@ -1,13 +1,12 @@
-import { getSiteUrl } from '../lib/siteUrl';
-
 export default function robots() {
-  const siteUrl = getSiteUrl();
+  const baseUrl = 'https://ryannyberg.com'; // Update to your actual domain
 
   return {
     rules: {
       userAgent: '*',
       allow: '/',
+      disallow: '/private/',
     },
-    sitemap: `${siteUrl}/sitemap.xml`,
+    sitemap: `${baseUrl}/sitemap.xml`,
   };
 }
