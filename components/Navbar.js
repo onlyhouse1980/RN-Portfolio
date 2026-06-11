@@ -60,7 +60,11 @@ export default function Navbar() {
 
   const scrollTo = (id) => {
     const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.location.href = `/#${id}`;
+    }
     setMenuOpen(false);
   };
 
@@ -129,10 +133,11 @@ export default function Navbar() {
         <span /><span /><span />
       </button>
       <ul className="navbar__links">
-        <li><a onClick={() => scrollTo('about')} href="#about">{t.nav.about}</a></li>
-        <li><a onClick={() => scrollTo('projects')} href="#projects">{t.nav.work}</a></li>
-        <li><a onClick={() => scrollTo('skills')} href="#skills">{t.nav.skills}</a></li>
-        <li><a onClick={() => scrollTo('contact')} href="#contact">{t.nav.contact}</a></li>
+        <li><a onClick={(e) => { e.preventDefault(); scrollTo('about'); }} href="/#about">{t.nav.about}</a></li>
+        <li><a onClick={(e) => { e.preventDefault(); scrollTo('projects'); }} href="/#projects">{t.nav.work}</a></li>
+        <li><a onClick={(e) => { e.preventDefault(); scrollTo('skills'); }} href="/#skills">{t.nav.skills}</a></li>
+        <li><a href="/resume">RESUME</a></li>
+        <li><a onClick={(e) => { e.preventDefault(); scrollTo('contact'); }} href="/#contact">{t.nav.contact}</a></li>
       </ul>
     </nav>
   );
