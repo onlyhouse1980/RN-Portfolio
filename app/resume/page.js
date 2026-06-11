@@ -104,10 +104,13 @@ function ResumeContent() {
               <span style={{ color: 'var(--lime)' }}>// EMAIL </span> onlyhouse@gmail.com
             </div>
             <div>
-              <span style={{ color: 'var(--lime)' }}>// PHONE </span> +49 01575 6424428
+              <span style={{ color: 'var(--lime)' }}>// PHONE </span> +49 0157 56424428
             </div>
             <div>
-              <span style={{ color: 'var(--lime)' }}>// LOCATION </span> Leipziger Str 222, 01139 Dresden, Germany
+              <span style={{ color: 'var(--lime)' }}>// LOCATION </span> Leipziger Str. 222, 01139 Dresden, Germany, Remote
+            </div>
+            <div>
+              <span style={{ color: 'var(--lime)' }}>// LANGUAGES </span> English, German
             </div>
           </div>
           

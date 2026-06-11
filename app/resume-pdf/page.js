@@ -40,8 +40,9 @@ const GermanCV = ({ t }) => (
         <div className="cv-title">{t.title}</div>
         <h2 className="cv-section-title">{t.contact}</h2>
         <div className="cv-contact-item">Email: onlyhouse@gmail.com</div>
-        <div className="cv-contact-item">Phone: +49 01575 6424428</div>
-        <div className="cv-contact-item">Location: Leipziger Str 222, 01139 Dresden, Germany</div>
+        <div className="cv-contact-item">Phone: +49 0157 56424428</div>
+        <div className="cv-contact-item">Location: Leipziger Str. 222, 01139 Dresden, Germany, Remote</div>
+        <div className="cv-contact-item">Languages: English, German</div>
         <h2 className="cv-section-title">{t.skills}</h2>
         <div>{TECH.map(s => <span key={s} className="cv-skill-item">{s}</span>)}</div>
       </div>
@@ -97,7 +98,7 @@ const EnglishCV = ({ t }) => (
       <div className="cv-header">
         <h1 className="cv-name">Ryan Nyberg</h1>
         <div className="cv-title">{t.title}</div>
-        <div className="cv-contact">onlyhouse@gmail.com &nbsp;|&nbsp; +49 01575 6424428 &nbsp;|&nbsp; Leipziger Str 222, 01139 Dresden, Germany</div>
+        <div className="cv-contact">onlyhouse@gmail.com &nbsp;|&nbsp; +49 0157 56424428 &nbsp;|&nbsp; Leipziger Str. 222, 01139 Dresden, Germany, Remote &nbsp;|&nbsp; Languages: English, German</div>
       </div>
       <div className="cv-summary">{t.summary}</div>
       
@@ -170,7 +171,7 @@ const FrenchCV = ({ t }) => (
           <h1 className="cv-name">RYAN <strong>NYBERG</strong></h1>
           <div className="cv-title">{t.title}</div>
           <div className="cv-contact">
-            Leipziger Str 222, 01139 Dresden, Germany<br/>onlyhouse@gmail.com<br/>+49 01575 6424428
+            Leipziger Str. 222, 01139 Dresden, Germany, Remote<br/>onlyhouse@gmail.com<br/>+49 0157 56424428<br/>Languages: English, German
           </div>
         </div>
       </div>
@@ -246,9 +247,10 @@ const SpanishCV = ({ t }) => (
         <div className="cv-title">{t.title}</div>
         
         <h2 className="cv-section-title-side">{t.contact}</h2>
-        <div className="cv-contact-item">Leipziger Str 222, 01139 Dresden, Germany</div>
+        <div className="cv-contact-item">Leipziger Str. 222, 01139 Dresden, Germany, Remote</div>
         <div className="cv-contact-item">onlyhouse@gmail.com</div>
-        <div className="cv-contact-item">+49 01575 6424428</div>
+        <div className="cv-contact-item">+49 0157 56424428</div>
+        <div className="cv-contact-item">Languages: English, German</div>
         
         <h2 className="cv-section-title-side" style={{ marginTop: '40px' }}>{t.skills}</h2>
         <div>{TECH.map(s => <div key={s} className="cv-skill-item">{s}</div>)}</div>
@@ -319,7 +321,7 @@ const DutchCV = ({ t }) => (
           </div>
         </div>
         <div className="cv-contact">
-          Leipziger Str 222, 01139 Dresden, Germany<br/>onlyhouse@gmail.com<br/>+49 01575 6424428
+          Leipziger Str. 222, 01139 Dresden, Germany, Remote<br/>onlyhouse@gmail.com<br/>+49 0157 56424428<br/>Languages: English, German
         </div>
       </div>
       
