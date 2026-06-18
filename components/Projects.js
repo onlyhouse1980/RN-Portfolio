@@ -188,6 +188,16 @@ It also includes an admin dashboard for viewing orders, managing fulfillment, an
     icon: '🎓',
     fallbackImage: '/communiversity.png',
   },
+  {
+    num: '15',
+    title: 'AdminPilot\nLife Admin',
+    tags: ['Next.js 16', 'Gemini', 'PWA'],
+    desc: `AdminPilot is a mobile-first Progressive Web App (PWA) designed to automate "life admin" obligations by extracting actionable items, deadlines, and financial amounts from raw text, uploaded PDFs, and forwarded emails. Built on Next.js 16 (React 19) and authenticated securely using Clerk, the application utilizes Vercel AI SDK integrated with Google Gemini (gemini-2.5-flash) to read, structure, and categorize incoming files or copy-pasted contents into detailed tasks and response drafts. To support seamless email integration, the platform features a SendGrid Inbound Email Webhook that automatically routes emails forwarded to scan@inbox.ryanernstnyberg.com directly to the matching user's inbox in the app. The database layer is powered by Neon Serverless Postgres using Prisma ORM for type-safe database queries. Finally, the user experience is optimized for native-like interactions across devices, featuring a responsive navigation system styled with Tailwind CSS and offline capabilities powered by Serwist for service worker caching.`,
+    year: '2026',
+    link: 'https://adminpilot.ryanernstnyberg.com',
+    icon: '✈️',
+    fallbackImage: '/adminpilot.png',
+  },
 ];
 // ─────────────────────────────────────────────────────────────────────────────
 
