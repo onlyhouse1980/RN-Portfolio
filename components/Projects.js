@@ -202,7 +202,7 @@ It also includes an admin dashboard for viewing orders, managing fulfillment, an
     num: '16',
     title: 'VPD Tracker',
     tags: ['PWA', 'Next.Js', 'Interactive'],
-    desc: `Vapor Pressure Deficit calculator for growing cannabis indoors. Used to optimize the temperature and humidity in the grow tent. Installable on Android, iOS and Desktop`,
+    desc: `Vapor Pressure Deficit calculator. It measures the difference between the amount of moisture currently in the air and the maximum amount of moisture the air can hold at a specific temperature. It is a critical metric for optimizing plant growth, as it directly affects a plant's ability to transpire and absorb nutrients. Installable on Android, iOS and Desktop`,
     year: '2026',
     link: 'https://vpd-calc.vercel.app',
     icon: '🌿',
