@@ -198,6 +198,16 @@ It also includes an admin dashboard for viewing orders, managing fulfillment, an
     icon: '✈️',
     fallbackImage: '/adminpilot.png',
   },
+  {
+    num: '16',
+    title: 'VPD Tracker',
+    tags: ['PWA', 'Next.Js', 'Interactive'],
+    desc: `Vapor Pressure Deficit calculator for growing cannabis indoors. Used to optimize the temperature and humidity in the grow tent.`,
+    year: '2026',
+    link: 'https://vpd-calc.vercel.app',
+    icon: '🌿',
+    fallbackImage: '/VPDTracker.png',
+  },
 ];
 // ─────────────────────────────────────────────────────────────────────────────
 
