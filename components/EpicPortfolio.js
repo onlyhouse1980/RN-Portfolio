@@ -59,7 +59,7 @@ function SceneAtmosphere({ variant = '' }) {
   );
 }
 
-function EpicNavigation({ motionEnabled, onMotionToggle }) {
+export function EpicNavigation({ motionEnabled, onMotionToggle, homePath = '' }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const { lang, setLang, t } = useLang();
   const languages = ['en', 'de', 'es', 'fr', 'nl'];
@@ -70,10 +70,11 @@ function EpicNavigation({ motionEnabled, onMotionToggle }) {
   }, [menuOpen]);
 
   const closeMenu = () => setMenuOpen(false);
+  const sectionHref = (hash) => `${homePath}${hash}`;
 
   return (
     <header className={`epic-nav${menuOpen ? ' epic-nav--open' : ''}`}>
-      <a className="epic-nav__brand" href="#hero" onClick={closeMenu}>
+      <a className="epic-nav__brand" href={homePath || '#hero'} onClick={closeMenu}>
         <span>RYAN</span>
         <span className="epic-nav__brand-mark" aria-hidden="true">/</span>
         <span>NYBERG</span>
@@ -98,11 +99,11 @@ function EpicNavigation({ motionEnabled, onMotionToggle }) {
 
       <nav className="epic-nav__panel" id="primary-navigation" aria-label="Primary navigation">
         <div className="epic-nav__links">
-          <a href="#about" onClick={closeMenu}>{t.nav.about}</a>
-          <a href="#projects" onClick={closeMenu}>{t.nav.work}</a>
-          <a href="#skills" onClick={closeMenu}>{t.nav.skills}</a>
-          <a href="/resume" onClick={closeMenu}>Resume</a>
-          <a href="#contact" onClick={closeMenu}>{t.nav.contact}</a>
+          <a href={sectionHref('#about')} onClick={closeMenu}>{t.nav.about}</a>
+          <a href={sectionHref('#projects')} onClick={closeMenu}>{t.nav.work}</a>
+          <a href={sectionHref('#skills')} onClick={closeMenu}>{t.nav.skills}</a>
+          <a href="/resume" aria-current={homePath ? 'page' : undefined} onClick={closeMenu}>Resume</a>
+          <a href={sectionHref('#contact')} onClick={closeMenu}>{t.nav.contact}</a>
         </div>
 
         <div className="epic-nav__controls">

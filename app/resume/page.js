@@ -1,355 +1,607 @@
 'use client';
 
-import Navbar from '../../components/Navbar';
-import CustomCursor from '../../components/CustomCursor';
-import PlasmaGrid from '../../components/PlasmaGrid';
-import { LanguageProvider, useLang } from '../../lib/i18n';
-import { useEffect } from 'react';
-
 import Image from 'next/image';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import CustomCursor from '../../components/CustomCursor';
+import { EpicNavigation } from '../../components/EpicPortfolio';
+import { LanguageProvider, useLang } from '../../lib/i18n';
 
 const TECH = [
-  'Next.js', 'React', 'TypeScript', 'Node.js',
-  'PostgreSQL', 'MongoDB', 'Redis',
-  'Docker', 'AWS', 'Vercel', 'Git',
-  'Tailwind', 'GSAP', 'Prisma', 'Stripe',
-  'REST APIs', 'WebSockets',
-  'React Native', 'Framer Motion', 'Three.js', 'WebGL',
+  'Next.js 16',
+  'React 19',
+  'TypeScript',
+  'Node.js',
+  'PostgreSQL',
+  'MongoDB',
+  'Redis',
+  'Docker',
+  'AWS',
+  'Vercel',
+  'Git',
+  'Tailwind',
+  'GSAP',
+  'Prisma',
+  'Stripe',
+  'REST APIs',
+  'WebSockets',
+  'React Native',
+  'Three.js',
+  'AI Systems',
 ];
+
+function ResumeAtmosphere({ variant = '' }) {
+  return (
+    <>
+      <div
+        className={`resume-scene-layer depth-0 resume-atmosphere resume-atmosphere--far ${variant}`}
+        data-depth="0"
+        aria-hidden="true"
+      />
+      <div
+        className={`resume-scene-layer depth-1 resume-atmosphere resume-atmosphere--glow ${variant}`}
+        data-depth="1"
+        data-resume-parallax="1"
+        aria-hidden="true"
+      />
+      <div
+        className={`resume-scene-layer depth-2 resume-atmosphere resume-atmosphere--grid ${variant}`}
+        data-depth="2"
+        data-resume-parallax="2"
+        aria-hidden="true"
+      />
+    </>
+  );
+}
 
 function ResumeContent() {
   const { lang, t } = useLang();
+  const rootRef = useRef(null);
+  const [motionEnabled, setMotionEnabled] = useState(true);
+
+  const summaryWords = useMemo(
+    () => (t.resume?.summary || '').split(/\s+/).filter(Boolean),
+    [t.resume?.summary],
+  );
+
+  const pdfPath = `/Ryan_Nyberg_Resume_${lang}.pdf`;
+  const resumeTitle = `${t.resume?.myResumeLabel || 'My '}${t.resume?.myResumeHighlight || 'Resume'}`;
+
   useEffect(() => {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const savedPreference = window.localStorage.getItem('portfolio-motion');
+    const shouldEnable = savedPreference ? savedPreference === 'on' : !reducedMotion;
+
+    setMotionEnabled(shouldEnable);
+    document.documentElement.classList.toggle('no-motion', !shouldEnable);
+
+    return () => {
+      document.documentElement.classList.remove('no-motion', 'resume-perf-lite');
+    };
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
+
+  useEffect(() => {
+    let animationContext;
     let lenis;
-    let ctx;
+    let tickerCallback;
+    let cancelled = false;
+
     const init = async () => {
-      const LenisModule = await import('lenis');
-      const Lenis = LenisModule.default;
+      const [{ gsap }, { ScrollTrigger }] = await Promise.all([
+        import('gsap'),
+        import('gsap/ScrollTrigger'),
+      ]);
 
-      lenis = new Lenis({
-        duration: 1.4,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothTouch: false,
-        touchMultiplier: 1.5,
-      });
-
-      const { gsap } = await import('gsap');
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+      if (cancelled || !rootRef.current) return;
       gsap.registerPlugin(ScrollTrigger);
 
-      lenis.on('scroll', ScrollTrigger.update);
-      gsap.ticker.add((time) => lenis.raf(time * 1000));
-      gsap.ticker.lagSmoothing(0);
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
+      const liteMode = reducedMotion || coarsePointer || !motionEnabled;
 
-      ctx = gsap.context(() => {
-        // Page Load Animations
-        gsap.fromTo(
-          '.resume-header-img',
-          { scale: 0.8, opacity: 0 },
-          { scale: 1, opacity: 1, duration: 1.2, ease: 'power4.out' }
-        );
+      document.documentElement.classList.toggle('resume-perf-lite', coarsePointer);
 
-        gsap.fromTo(
-          '.resume-header-title',
-          { y: 50, opacity: 0 },
-          { y: 0, opacity: 1, duration: 1.2, ease: 'power4.out', delay: 0.1 }
-        );
+      if (!liteMode) {
+        const Lenis = (await import('lenis')).default;
+        if (cancelled) return;
 
-        gsap.fromTo(
-          '.resume-header-download',
-          { scale: 0.9, opacity: 0 },
-          { scale: 1, opacity: 1, duration: 1.2, ease: 'power4.out', delay: 0.2 }
-        );
+        lenis = new Lenis({
+          duration: 1.15,
+          easing: (value) => Math.min(1, 1.001 - Math.pow(2, -10 * value)),
+          smoothWheel: true,
+          syncTouch: false,
+        });
+        lenis.on('scroll', ScrollTrigger.update);
+        tickerCallback = (time) => lenis?.raf(time * 1000);
+        gsap.ticker.add(tickerCallback);
+        gsap.ticker.lagSmoothing(0);
+      }
 
-        gsap.fromTo(
-          '.resume-contact-item',
-          { y: 20, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', stagger: 0.1, delay: 0.3 }
-        );
+      animationContext = gsap.context(() => {
+        if (liteMode) {
+          gsap.set(
+            '.resume-hero__kicker, .resume-hero__title-line, .resume-portrait-frame, .resume-hero__meta, .resume-reveal, .resume-job, .resume-education-card, .resume-tech-chip',
+            {
+              clearProps: 'all',
+              opacity: 1,
+              x: 0,
+              y: 0,
+              scale: 1,
+              clipPath: 'inset(0 0% 0 0)',
+            },
+          );
+          gsap.set('.resume-summary__word', { color: 'rgba(245, 242, 234, 0.96)' });
+          return;
+        }
 
-        // Scroll Animations with ScrollTrigger
-        gsap.fromTo(
-          '.resume-summary-section',
-          { y: 40, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
+        // Frame-sequenced entrance: crisp editorial ease, shared timing across
+        // typography, portrait, metadata, and actions.
+        const intro = gsap.timeline({ defaults: { ease: 'power4.out' } });
+        intro
+          .from('.resume-hero__kicker', { opacity: 0, y: 20, duration: 0.55 }, 0.12)
+          .from('.resume-hero__title-line', {
+            yPercent: 115,
             duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: '.resume-summary-section',
-              start: 'top 85%',
+            stagger: 0.11,
+          }, 0.08)
+          .from('.resume-portrait-frame', {
+            opacity: 0,
+            scale: 0.78,
+            clipPath: 'inset(48% 18% 48% 18% round 42%)',
+            duration: 1.3,
+          }, 0.28)
+          .from('.resume-hero__meta', {
+            opacity: 0,
+            y: 28,
+            duration: 0.72,
+          }, 0.62)
+          .from('.resume-hero__actions', {
+            opacity: 0,
+            y: 22,
+            duration: 0.64,
+          }, 0.76);
+
+        const heroTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: '.resume-hero',
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 1.1,
+          },
+        });
+        heroTimeline
+          .to('.resume-hero__title-mask--one .resume-hero__title-line', {
+            xPercent: -28,
+            opacity: 0.14,
+          }, 0)
+          .to('.resume-hero__title-mask--two .resume-hero__title-line', {
+            xPercent: 24,
+            opacity: 0.14,
+          }, 0)
+          .to('.resume-portrait-frame', {
+            scale: 1.1,
+            yPercent: -7,
+          }, 0)
+          .to('.resume-hero__ring--outer', { rotate: 170, scale: 1.1 }, 0)
+          .to('.resume-hero__ring--inner', { rotate: -130, scale: 0.88 }, 0)
+          .to('.resume-hero__meta, .resume-hero__actions, .resume-hero__kicker', {
+            opacity: 0,
+            y: -30,
+          }, 0.12);
+
+        gsap.utils.toArray('[data-resume-parallax]').forEach((element) => {
+          const depth = Number(element.dataset.depth || 1);
+          const scene = element.closest('.scene');
+          if (!scene || scene.classList.contains('resume-hero')) return;
+
+          gsap.fromTo(
+            element,
+            { yPercent: 5 * Math.max(1, depth / 2) },
+            {
+              yPercent: -8 * Math.max(1, depth / 2),
+              ease: 'none',
+              scrollTrigger: {
+                trigger: scene,
+                start: 'top bottom',
+                end: 'bottom top',
+                scrub: true,
+              },
             },
-          }
-        );
+          );
+        });
 
         gsap.fromTo(
-          '.resume-experience-title',
-          { y: 30, opacity: 0 },
+          '.resume-summary__word',
+          { color: 'rgba(245, 242, 234, 0.12)' },
           {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
-            ease: 'power3.out',
+            color: 'rgba(245, 242, 234, 0.96)',
+            stagger: 0.075,
+            ease: 'none',
             scrollTrigger: {
-              trigger: '.resume-experience-title',
-              start: 'top 85%',
-            },
-          }
-        );
-
-        gsap.fromTo(
-          '.resume-job-item',
-          { x: -30, opacity: 0 },
-          {
-            x: 0,
-            opacity: 1,
-            duration: 0.9,
-            ease: 'power3.out',
-            stagger: 0.15,
-            scrollTrigger: {
-              trigger: '.resume-experience-list',
+              trigger: '.resume-summary__copy',
               start: 'top 80%',
+              end: 'bottom 38%',
+              scrub: 0.6,
             },
-          }
+          },
         );
 
-        gsap.fromTo(
-          '.resume-education-title',
-          { y: 30, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
+        gsap.utils.toArray('.resume-reveal').forEach((element) => {
+          gsap.from(element, {
+            opacity: 0,
+            y: 48,
+            clipPath: 'inset(0 0 18% 0)',
+            duration: 0.88,
             ease: 'power3.out',
             scrollTrigger: {
-              trigger: '.resume-education-title',
-              start: 'top 85%',
+              trigger: element,
+              start: 'top 88%',
+              once: true,
             },
-          }
-        );
+          });
+        });
 
-        gsap.fromTo(
-          '.resume-edu-item',
-          { x: -30, opacity: 0 },
-          {
-            x: 0,
-            opacity: 1,
-            duration: 0.9,
-            ease: 'power3.out',
-            stagger: 0.15,
-            scrollTrigger: {
-              trigger: '.resume-education-list',
-              start: 'top 80%',
-            },
-          }
-        );
-
-        gsap.fromTo(
-          '.resume-skills-title',
-          { y: 30, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 0.8,
+        gsap.utils.toArray('.resume-job').forEach((job, index) => {
+          gsap.from(job, {
+            opacity: 0,
+            x: index % 2 === 0 ? -60 : 60,
+            clipPath: index % 2 === 0
+              ? 'inset(0 18% 0 0)'
+              : 'inset(0 0 0 18%)',
+            duration: 0.92,
             ease: 'power3.out',
             scrollTrigger: {
-              trigger: '.resume-skills-title',
-              start: 'top 85%',
+              trigger: job,
+              start: 'top 88%',
+              once: true,
             },
-          }
-        );
+          });
+        });
 
-        gsap.fromTo(
-          '.resume-skill-badge',
-          { scale: 0.7, opacity: 0 },
-          {
-            scale: 1,
-            opacity: 1,
-            duration: 0.6,
-            ease: 'back.out(1.7)',
-            stagger: 0.04,
-            scrollTrigger: {
-              trigger: '.resume-skills-list',
-              start: 'top 85%',
-            },
-          }
-        );
-      });
+        gsap.from('.resume-education-card', {
+          opacity: 0,
+          y: 54,
+          stagger: 0.12,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '.resume-education-grid',
+            start: 'top 84%',
+            once: true,
+          },
+        });
+
+        gsap.from('.resume-tech-chip', {
+          opacity: 0,
+          scale: 0.82,
+          y: 18,
+          stagger: 0.035,
+          duration: 0.48,
+          ease: 'back.out(1.35)',
+          scrollTrigger: {
+            trigger: '.resume-tech-grid',
+            start: 'top 86%',
+            once: true,
+          },
+        });
+      }, rootRef);
+
+      ScrollTrigger.refresh();
     };
 
     init();
 
     return () => {
-      if (lenis) lenis.destroy();
-      if (ctx) ctx.revert();
+      cancelled = true;
+      animationContext?.revert();
+      lenis?.destroy();
+      document.documentElement.classList.remove('resume-perf-lite');
+      if (tickerCallback) {
+        import('gsap').then(({ gsap }) => gsap.ticker.remove(tickerCallback));
+      }
     };
-  }, []);
+  }, [lang, motionEnabled]);
+
+  const handleMotionToggle = () => {
+    setMotionEnabled((current) => {
+      const next = !current;
+      window.localStorage.setItem('portfolio-motion', next ? 'on' : 'off');
+      document.documentElement.classList.toggle('no-motion', !next);
+      return next;
+    });
+  };
 
   return (
-    <>
-      <PlasmaGrid />
+    <div className="resume-epic" ref={rootRef}>
+      <a className="skip-link" href="#resume-main">Skip to résumé content</a>
+      <div className="resume-grain" aria-hidden="true" />
       <CustomCursor />
-      <Navbar />
+      <EpicNavigation
+        motionEnabled={motionEnabled}
+        onMotionToggle={handleMotionToggle}
+        homePath="/"
+      />
 
-      <main style={{ paddingTop: '10rem', minHeight: '100vh', position: 'relative', zIndex: 1, paddingBottom: '6rem' }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 3rem' }}>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', marginBottom: '4rem', gap: '2rem' }}>
-            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-end', justifyContent: 'space-between', width: '100%', gap: '2rem' }}>
-              <div>
-                <Image 
-                  className="resume-header-img"
-                  src="/profile.jpg" 
-                  alt="Ryan Nyberg" 
-                  width={150} 
-                  height={210} 
-                  unoptimized
+      <main id="resume-main">
+        <section className="scene resume-hero" aria-label={resumeTitle}>
+          <div className="resume-hero__stage">
+            <div className="resume-scene-layer depth-0 resume-hero__void" data-depth="0" aria-hidden="true" />
+
+            <div
+              className="resume-scene-layer depth-1 resume-hero__ghost"
+              data-depth="1"
+              aria-hidden="true"
+            >
+              <span>CURRICULUM</span>
+              <span>VITAE</span>
+            </div>
+
+            <div
+              className="resume-scene-layer depth-2 resume-hero__geometry"
+              data-depth="2"
+              aria-hidden="true"
+            >
+              <div className="resume-hero__ring resume-hero__ring--outer" />
+              <div className="resume-hero__ring resume-hero__ring--inner" />
+              <span className="resume-hero__coordinate resume-hero__coordinate--one">CV / 2026</span>
+              <span className="resume-hero__coordinate resume-hero__coordinate--two">52.5200° N</span>
+            </div>
+
+            <div className="resume-scene-layer depth-3 resume-hero__portrait" data-depth="3">
+              <div className="resume-portrait-frame">
+                <Image
+                  src="/profile.jpg"
+                  alt="Portrait of full-stack developer and AI engineer Ryan Nyberg"
+                  fill
                   priority
-                  style={{ borderRadius: '50%', border: '2px solid var(--lime)', objectFit: 'cover', objectPosition: 'top center', marginBottom: '2rem' }}
+                  sizes="(max-width: 760px) 78vw, 34vw"
                 />
-                <h1 className="about__heading resume-header-title" style={{ fontSize: 'clamp(3rem, 5vw, 6rem)', margin: 0 }}>
-                  {t.resume?.myResumeLabel}<em>{t.resume?.myResumeHighlight}</em>
-                </h1>
+                <span aria-hidden="true">RN / PROFILE</span>
               </div>
-              <a 
-                className="resume-header-download"
-                href={`/Ryan_Nyberg_Resume_${lang}.pdf`} 
-                target="_blank"
-                download={`Ryan_Nyberg_Resume_${lang}.pdf`}
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  padding: '1rem 2rem',
-                  backgroundColor: 'var(--lime)',
-                  color: 'var(--bg)',
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.8rem',
-                  letterSpacing: '0.15em',
-                  textTransform: 'uppercase',
-                  textDecoration: 'none',
-                  borderRadius: '3px',
-                  fontWeight: 'bold',
-                  transition: 'opacity 0.2s',
-                  marginBottom: '1.5rem'
-                }}
-                onMouseOver={(e) => e.target.style.opacity = '0.8'}
-                onMouseOut={(e) => e.target.style.opacity = '1'}
-              >
-                {t.resume?.download || 'Download PDF'}
-              </a>
+            </div>
+
+            <div className="resume-scene-layer depth-4 resume-hero__content" data-depth="4">
+              <p className="resume-hero__kicker">
+                <span aria-hidden="true" />
+                {t.resume?.title} · 2026
+              </p>
+
+              <h1 className="resume-hero__title" aria-label={resumeTitle}>
+                <span className="resume-hero__title-mask resume-hero__title-mask--one" aria-hidden="true">
+                  <span className="resume-hero__title-line">{t.resume?.myResumeLabel || 'My'}</span>
+                </span>
+                <span className="resume-hero__title-mask resume-hero__title-mask--two" aria-hidden="true">
+                  <span className="resume-hero__title-line">{t.resume?.myResumeHighlight || 'Resume'}</span>
+                </span>
+              </h1>
+
+              <div className="resume-hero__meta">
+                <div>
+                  <span>{t.contact?.info?.location}</span>
+                  <strong>Dresden · Germany · Remote</strong>
+                </div>
+                <div>
+                  <span>{t.contact?.info?.email}</span>
+                  <a href="mailto:onlyhouse@gmail.com">onlyhouse@gmail.com</a>
+                </div>
+                <div>
+                  <span>{t.contact?.info?.linkedin}</span>
+                  <a href="https://linkedin.com/in/ryan-nyberg" target="_blank" rel="noreferrer">
+                    /in/ryan-nyberg
+                  </a>
+                </div>
+              </div>
+
+              <div className="resume-hero__actions">
+                <a
+                  className="button button--signal"
+                  href={pdfPath}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download={`Ryan_Nyberg_Resume_${lang}.pdf`}
+                >
+                  {t.resume?.download || 'Download PDF'}
+                  <span aria-hidden="true">↓</span>
+                </a>
+                <a className="button button--quiet" href="#resume-experience">
+                  {t.resume?.experience}
+                  <span aria-hidden="true">↘</span>
+                </a>
+              </div>
+            </div>
+
+            <div
+              className="resume-scene-layer depth-5 resume-hero__foreground"
+              data-depth="5"
+              aria-hidden="true"
+            >
+              <span className="resume-hero__chapter">01 / INTRODUCTION</span>
+              <span className="resume-hero__scroll">SCROLL TO READ <i /></span>
             </div>
           </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', marginBottom: '3rem', fontFamily: 'var(--font-mono)', fontSize: '0.9rem', color: 'var(--gray)' }}>
-            <div className="resume-contact-item">
-              <span style={{ color: 'var(--lime)' }}>// EMAIL </span> onlyhouse@gmail.com
-            </div>
-            <div className="resume-contact-item">
-              <span style={{ color: 'var(--lime)' }}>// PHONE </span> +49 0157 56424428
-            </div>
-            <div className="resume-contact-item">
-              <span style={{ color: 'var(--lime)' }}>// LOCATION </span> Leipziger Str. 222, 01139 Dresden, Germany, Remote
-            </div>
-            <div className="resume-contact-item">
-              <span style={{ color: 'var(--lime)' }}>// LANGUAGES </span> English, German
-            </div>
+        </section>
+
+        <section className="scene resume-summary-scene" id="resume-summary" aria-label={t.resume?.profSummary}>
+          <ResumeAtmosphere variant="resume-atmosphere--summary" />
+          <div className="depth-3 resume-summary__index" data-depth="3" data-resume-parallax="3" aria-hidden="true">
+            02
           </div>
-          
-          <div className="resume-summary-section" style={{ marginBottom: '4rem', maxWidth: '900px' }}>
-            <h2 style={{ fontFamily: 'var(--font-mono)', fontSize: '1rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: '1.5rem' }}>
-              // {t.resume?.profSummary}
+
+          <div className="depth-4 resume-summary__content" data-depth="4">
+            <p className="section-kicker resume-reveal">02 / {t.resume?.profSummary}</p>
+            <h2 className="resume-summary__heading resume-reveal">
+              Engineer with <em>range.</em>
             </h2>
-            <p style={{ fontFamily: 'var(--font-condensed)', fontSize: '1.2rem', fontWeight: 300, color: 'var(--white)', lineHeight: 1.6 }}>
-              {t.resume?.summary}
+            <p className="resume-summary__copy" aria-label={t.resume?.summary}>
+              {summaryWords.map((word, index) => (
+                <span className="resume-summary__word" aria-hidden="true" key={`${word}-${index}`}>
+                  {word}
+                </span>
+              ))}
             </p>
+
+            <div className="resume-summary__metrics">
+              <article className="resume-reveal">
+                <strong>10+</strong>
+                <span>Years across engineering, media, and brand systems</span>
+              </article>
+              <article className="resume-reveal">
+                <strong>16</strong>
+                <span>Production case studies shipped and documented</span>
+              </article>
+              <article className="resume-reveal">
+                <strong>05</strong>
+                <span>Languages supported across this résumé experience</span>
+              </article>
+            </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '6rem' }}>
-            
-            {/* Experience Section */}
-            <section>
-              <h2 className="resume-experience-title" style={{ fontFamily: 'var(--font-mono)', fontSize: '1rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: '2rem' }}>
-                // {t.resume?.experience}
-              </h2>
-              
-              <div className="resume-experience-list" style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
-                {t.resume?.jobs?.map((job, idx) => (
-                  <div className="resume-job-item" key={idx} style={{ borderLeft: '1px solid var(--lime)', paddingLeft: '2rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.2rem' }}>
-                      <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', letterSpacing: '0.05em', color: 'var(--white)', margin: 0 }}>{job.company}</h3>
-                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--gray)' }}>{job.date}</span>
-                    </div>
-                    <p style={{ fontFamily: 'var(--font-condensed)', fontSize: '1.2rem', fontWeight: 500, color: 'var(--lime)', marginBottom: '0.8rem', marginTop: 0 }}>{job.title}</p>
-                    <p style={{ fontFamily: 'var(--font-condensed)', fontSize: '1.1rem', fontWeight: 300, color: 'var(--white)', lineHeight: 1.6, maxWidth: '800px', marginBottom: job.desc2 ? '0.8rem' : 0 }}>
-                      {job.desc1}
-                    </p>
-                    {job.desc2 && (
-                      <p style={{ fontFamily: 'var(--font-condensed)', fontSize: '1.1rem', fontWeight: 300, color: 'var(--white)', lineHeight: 1.6, maxWidth: '800px' }}>
-                        {job.desc2}
-                      </p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </section>
+          <div className="depth-5 resume-summary__star" data-depth="5" data-resume-parallax="5" aria-hidden="true">
+            ✦
+          </div>
+        </section>
 
-            {/* Education Section */}
-            <section>
-              <h2 className="resume-education-title" style={{ fontFamily: 'var(--font-mono)', fontSize: '1rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: '2rem' }}>
-                // {t.resume?.education}
-              </h2>
-              
-              <div className="resume-education-list" style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
-                {t.resume?.edu?.map((item, idx) => (
-                  <div className="resume-edu-item" key={idx} style={{ borderLeft: '1px solid var(--lime)', paddingLeft: '2rem' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '0.5rem' }}>
-                      <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', letterSpacing: '0.05em', color: 'var(--white)', margin: 0 }}>{item.school}</h3>
-                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--gray)' }}>{item.date}</span>
-                    </div>
-                    <p style={{ fontFamily: 'var(--font-condensed)', fontSize: '1.1rem', fontWeight: 300, color: 'var(--lime)', margin: 0 }}>{item.degree}</p>
-                    <p style={{ fontFamily: 'var(--font-condensed)', fontSize: '1rem', fontWeight: 300, color: 'var(--gray)', marginTop: '0.5rem', maxWidth: '700px', lineHeight: 1.5 }}>
-                      {item.desc}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </section>
+        <section className="scene resume-experience-scene" id="resume-experience" aria-label={t.resume?.experience}>
+          <ResumeAtmosphere variant="resume-atmosphere--experience" />
+          <div className="depth-3 resume-experience__rail" data-depth="3" aria-hidden="true">
+            <span>2016</span>
+            <i />
+            <span>2008</span>
+          </div>
 
-            {/* Skills Section */}
-            <section>
-              <h2 className="resume-skills-title" style={{ fontFamily: 'var(--font-mono)', fontSize: '1rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--lime)', marginBottom: '2rem' }}>
-                // {t.resume?.skills}
+          <div className="depth-4 resume-experience__content" data-depth="4">
+            <header className="resume-experience__header resume-reveal">
+              <p className="section-kicker">03 / {t.resume?.experience}</p>
+              <h2>
+                Built in the <em>real world.</em>
               </h2>
-              
-              <div className="resume-skills-list" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-                {TECH.map(skill => (
-                  <span className="resume-skill-badge" key={skill} style={{
-                    padding: '0.5rem 1rem',
-                    border: '1px solid var(--lime)',
-                    borderRadius: '50px',
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.8rem',
-                    color: 'var(--lime)',
-                    backgroundColor: 'rgba(180, 255, 0, 0.05)',
-                    display: 'inline-block'
-                  }}>
+              <p>{t.resume?.jobs?.length || 0} roles across software, live experiences, and brand operations.</p>
+            </header>
+
+            <div className="resume-experience__list">
+              {t.resume?.jobs?.map((job, index) => (
+                <article className="resume-job" key={`${job.company}-${job.date}`}>
+                  <div className="resume-job__number">{String(index + 1).padStart(2, '0')}</div>
+                  <div className="resume-job__date">{job.date}</div>
+                  <div className="resume-job__body">
+                    <h3>{job.company}</h3>
+                    <p className="resume-job__title">{job.title}</p>
+                    <div className="resume-job__description">
+                      <p>{job.desc1}</p>
+                      {job.desc2 && <p>{job.desc2}</p>}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <div className="depth-5 resume-experience__mark" data-depth="5" data-resume-parallax="5" aria-hidden="true">
+            EXPERIENCE
+          </div>
+        </section>
+
+        <section className="scene resume-credentials-scene" id="resume-credentials" aria-label={`${t.resume?.education} and ${t.resume?.skills}`}>
+          <ResumeAtmosphere variant="resume-atmosphere--credentials" />
+          <div className="depth-3 resume-credentials__orbit" data-depth="3" data-resume-parallax="3" aria-hidden="true">
+            <span>LEARN</span>
+            <span>BUILD</span>
+            <span>REFINE</span>
+          </div>
+
+          <div className="depth-4 resume-credentials__content" data-depth="4">
+            <div className="resume-credentials__heading resume-reveal">
+              <p className="section-kicker">04 / {t.resume?.education}</p>
+              <h2>Proof of <em>practice.</em></h2>
+            </div>
+
+            <div className="resume-education-grid">
+              {t.resume?.edu?.map((item, index) => (
+                <article className="resume-education-card" key={`${item.school}-${item.date}`}>
+                  <div className="resume-education-card__topline">
+                    <span>{String(index + 1).padStart(2, '0')}</span>
+                    <span>{item.date}</span>
+                  </div>
+                  <h3>{item.school}</h3>
+                  <strong>{item.degree}</strong>
+                  <p>{item.desc}</p>
+                </article>
+              ))}
+            </div>
+
+            <div className="resume-skills-block">
+              <div className="resume-skills-block__heading resume-reveal">
+                <p className="section-kicker">05 / {t.resume?.skills}</p>
+                <h2>Tools that <em>ship.</em></h2>
+              </div>
+
+              <div className="resume-tech-marquee" aria-label={TECH.join(', ')}>
+                <div className="resume-tech-marquee__track" aria-hidden="true">
+                  {[...TECH, ...TECH].map((skill, index) => (
+                    <span key={`${skill}-${index}`}>{skill}<i>✦</i></span>
+                  ))}
+                </div>
+              </div>
+
+              <div className="resume-tech-grid">
+                {TECH.map((skill, index) => (
+                  <span className="resume-tech-chip" key={skill}>
+                    <i>{String(index + 1).padStart(2, '0')}</i>
                     {skill}
                   </span>
                 ))}
               </div>
-            </section>
-
+            </div>
           </div>
-        </div>
+
+          <div className="depth-5 resume-credentials__coordinate" data-depth="5" aria-hidden="true">
+            RN / CREDENTIALS / 2026
+          </div>
+        </section>
+
+        <section className="scene resume-cta-scene" id="resume-contact" aria-label={t.resume?.contact}>
+          <ResumeAtmosphere variant="resume-atmosphere--cta" />
+          <div className="depth-3 resume-cta__index" data-depth="3" data-resume-parallax="3" aria-hidden="true">
+            06
+          </div>
+          <div className="depth-4 resume-cta__content" data-depth="4">
+            <p className="section-kicker resume-reveal">06 / {t.resume?.contact}</p>
+            <h2 className="resume-reveal">
+              {t.contact?.big?.map((line, index) => (
+                <span className={index === 1 ? 'is-accent' : ''} key={line}>{line}</span>
+              ))}
+            </h2>
+            <p className="resume-cta__description resume-reveal">{t.contact?.desc}</p>
+            <div className="resume-cta__actions resume-reveal">
+              <a
+                className="button resume-cta__download"
+                href={pdfPath}
+                target="_blank"
+                rel="noopener noreferrer"
+                download={`Ryan_Nyberg_Resume_${lang}.pdf`}
+              >
+                {t.resume?.download || 'Download PDF'} <span aria-hidden="true">↓</span>
+              </a>
+              <a className="button resume-cta__email" href="mailto:onlyhouse@gmail.com">
+                {t.contact?.cta} <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+          <div className="depth-5 resume-cta__foreground" data-depth="5" aria-hidden="true">
+            AVAILABLE / WORLDWIDE
+          </div>
+        </section>
       </main>
 
-      <footer className="footer" style={{ borderTop: '1px solid var(--gray-dim)', padding: '2rem 3rem', textAlign: 'center' }}>
-        <p className="footer__copy" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--gray)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
-          © 2026 <span style={{ color: 'var(--white)' }}>RYAN.NYBERG</span>
-        </p>
+      <footer className="resume-footer">
+        <a href="/">Ryan Nyberg</a>
+        <span>{t.resume?.title}</span>
+        <span>© 2026</span>
       </footer>
-    </>
+    </div>
   );
 }
 
