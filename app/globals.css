@@ -1879,8 +1879,6 @@ body {
   .cursor, .cursor-follower { display: none; }
 }
 
-<<<<<<< Updated upstream
-=======
 /* ==========================================================================
    EPIC HOME — CINEMATIC EDITORIAL REDESIGN
    Techniques: 6-layer parallax, sticky scrub hero, ghost typography,
@@ -2156,10 +2154,9 @@ body:has(.epic-portfolio) {
 .epic-nav__role {
   display: flex;
   min-width: 0;
-  max-width: 33rem;
+  width: min(33rem, 50vw);
   justify-content: space-between;
   gap: 1.5rem;
-  width: auto;
   margin-inline: 3rem;
   overflow: hidden;
   color: rgba(245, 242, 234, 0.56);
@@ -4254,4 +4251,7 @@ body:has(.epic-portfolio) {
     transform: none !important;
   }
 }
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+>>>>>>> e59b9742d56f0f75bbec1d2d3af449ee6c0de10d
