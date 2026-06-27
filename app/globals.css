@@ -2154,7 +2154,8 @@ body:has(.epic-portfolio) {
 .epic-nav__role {
   display: flex;
   min-width: 0;
-  width: min(33rem, 50vw);
+  width: auto;
+  max-width: 33rem;
   justify-content: space-between;
   gap: 1.5rem;
   margin-inline: 3rem;
