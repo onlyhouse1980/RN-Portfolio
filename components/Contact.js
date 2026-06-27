@@ -140,8 +140,13 @@ export default function Contact() {
   };
 
   return (
-    <section className="contact" id="contact" ref={sectionRef}>
-      <div className="contact__inner">
+    <section className="scene contact" id="contact" ref={sectionRef} aria-label={t.contact.modal.eyebrow}>
+      <div className="scene-layer depth-0 contact__atmosphere contact__atmosphere--far" data-depth="0" aria-hidden="true" />
+      <div className="scene-layer depth-1 contact__atmosphere contact__atmosphere--glow" data-depth="1" aria-hidden="true" />
+      <div className="scene-layer depth-2 contact__atmosphere contact__atmosphere--grid" data-depth="2" aria-hidden="true" />
+      <div className="contact__index depth-3" data-depth="3" aria-hidden="true">06</div>
+
+      <div className="contact__inner depth-4" data-depth="4">
         <div className="contact__big" ref={bigTextRef}>
           <span className="line-wrap">
             <span className="line-inner" style={{ transform: 'translateY(110%)' }}>
@@ -194,6 +199,10 @@ export default function Contact() {
             </button>
           </div>
         </div>
+      </div>
+
+      <div className="contact__foreground depth-5" data-depth="5" aria-hidden="true">
+        LET&apos;S MAKE IT REAL
       </div>
 
       {isModalOpen && (

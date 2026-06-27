@@ -14,6 +14,13 @@ export default function CustomCursor() {
   const followerRef = useRef(null);
 
   useEffect(() => {
+    if (
+      window.matchMedia('(pointer: coarse)').matches
+      || window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      return undefined;
+    }
+
     const cursor = cursorRef.current;
     const follower = followerRef.current;
     if (!cursor || !follower) return;
@@ -67,8 +74,8 @@ export default function CustomCursor() {
 
   return (
     <>
-      <div ref={cursorRef} className="cursor" />
-      <div ref={followerRef} className="cursor-follower" />
+      <div ref={cursorRef} className="cursor" aria-hidden="true" />
+      <div ref={followerRef} className="cursor-follower" aria-hidden="true" />
     </>
   );
 }
