@@ -3,6 +3,182 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLang } from '../lib/i18n';
 
+export function ContactModal({ isOpen, onClose }) {
+  const dialogRef = useRef(null);
+  const { t } = useLang();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  });
+  const [formStatus, setFormStatus] = useState('idle');
+  const [formMessage, setFormMessage] = useState('');
+
+  useEffect(() => {
+    if (!isOpen) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    dialogRef.current?.focus();
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      setFormStatus('idle');
+      setFormMessage('');
+    }
+  }, [isOpen]);
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((current) => ({ ...current, [name]: value }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setFormStatus('submitting');
+    setFormMessage('');
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || t.contact.modal.errorDefault);
+      }
+
+      setFormStatus('success');
+      setFormMessage(t.contact.modal.success);
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch (error) {
+      setFormStatus('error');
+      setFormMessage(error.message || t.contact.modal.errorDefault);
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="contact-modal"
+      role="presentation"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) {
+          onClose();
+        }
+      }}
+    >
+      <div
+        className="contact-modal__dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="contact-modal-title"
+        tabIndex={-1}
+        ref={dialogRef}
+      >
+        <button
+          type="button"
+          className="contact-modal__close"
+          aria-label={t.contact.modal.close}
+          onClick={onClose}
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+
+        <div className="contact-modal__header">
+          <span className="contact-modal__eyebrow">{t.contact.modal.eyebrow}</span>
+          <h3 id="contact-modal-title">{t.contact.modal.title}</h3>
+        </div>
+
+        <form className="contact-form" onSubmit={handleSubmit}>
+          <div className="contact-form__row">
+            <label htmlFor="contact-name">{t.contact.modal.name}</label>
+            <input
+              id="contact-name"
+              name="name"
+              type="text"
+              value={formData.name}
+              onChange={handleInputChange}
+              autoComplete="name"
+              required
+            />
+          </div>
+
+          <div className="contact-form__row">
+            <label htmlFor="contact-email">{t.contact.modal.email}</label>
+            <input
+              id="contact-email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              autoComplete="email"
+              required
+            />
+          </div>
+
+          <div className="contact-form__row">
+            <label htmlFor="contact-subject">{t.contact.modal.subject}</label>
+            <input
+              id="contact-subject"
+              name="subject"
+              type="text"
+              value={formData.subject}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="contact-form__row">
+            <label htmlFor="contact-message">{t.contact.modal.message}</label>
+            <textarea
+              id="contact-message"
+              name="message"
+              value={formData.message}
+              onChange={handleInputChange}
+              rows="6"
+              required
+            />
+          </div>
+
+          {formMessage && (
+            <p className={`contact-form__status contact-form__status--${formStatus}`}>
+              {formMessage}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            className="contact-form__submit"
+            disabled={formStatus === 'submitting'}
+          >
+            <span>{formStatus === 'submitting' ? t.contact.modal.sending : t.contact.modal.send}</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 /**
  * Contact section component.
  * Features an interactive contact modal form and GSAP-animated entry text.
@@ -14,17 +190,8 @@ export default function Contact() {
   const sectionRef = useRef(null);
   const bigTextRef = useRef(null);
   const splitRef = useRef(null);
-  const dialogRef = useRef(null);
   const { t } = useLang();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
-  const [formStatus, setFormStatus] = useState('idle');
-  const [formMessage, setFormMessage] = useState('');
 
   useEffect(() => {
     const init = async () => {
@@ -67,76 +234,11 @@ export default function Contact() {
     init();
   }, []);
 
-  useEffect(() => {
-    if (!isModalOpen) return;
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    dialogRef.current?.focus();
-
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        setIsModalOpen(false);
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isModalOpen]);
-
   /**
    * Opens the contact modal and resets any previous form status.
    */
   const handleOpenModal = () => {
     setIsModalOpen(true);
-    setFormStatus('idle');
-    setFormMessage('');
-  };
-
-  /**
-   * Handles input changes in the contact form to update local state.
-   *
-   * @param {React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>} event - The input change event.
-   */
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((current) => ({ ...current, [name]: value }));
-  };
-
-  /**
-   * Handles the form submission by sending data to the server API.
-   *
-   * @param {React.FormEvent} event - The form submission event.
-   */
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setFormStatus('submitting');
-    setFormMessage('');
-
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || t.contact.modal.errorDefault);
-      }
-
-      setFormStatus('success');
-      setFormMessage(t.contact.modal.success);
-      setFormData({ name: '', email: '', subject: '', message: '' });
-    } catch (error) {
-      setFormStatus('error');
-      setFormMessage(error.message || t.contact.modal.errorDefault);
-    }
   };
 
   return (
@@ -205,106 +307,7 @@ export default function Contact() {
         LET&apos;S MAKE IT REAL
       </div>
 
-      {isModalOpen && (
-        <div
-          className="contact-modal"
-          role="presentation"
-          onMouseDown={(event) => {
-            if (event.target === event.currentTarget) {
-              setIsModalOpen(false);
-            }
-          }}
-        >
-          <div
-            className="contact-modal__dialog"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="contact-modal-title"
-            tabIndex={-1}
-            ref={dialogRef}
-          >
-            <button
-              type="button"
-              className="contact-modal__close"
-              aria-label={t.contact.modal.close}
-              onClick={() => setIsModalOpen(false)}
-            >
-              <span aria-hidden="true">×</span>
-            </button>
-
-            <div className="contact-modal__header">
-              <span className="contact-modal__eyebrow">{t.contact.modal.eyebrow}</span>
-              <h3 id="contact-modal-title">{t.contact.modal.title}</h3>
-            </div>
-
-            <form className="contact-form" onSubmit={handleSubmit}>
-              <div className="contact-form__row">
-                <label htmlFor="contact-name">{t.contact.modal.name}</label>
-                <input
-                  id="contact-name"
-                  name="name"
-                  type="text"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  autoComplete="name"
-                  required
-                />
-              </div>
-
-              <div className="contact-form__row">
-                <label htmlFor="contact-email">{t.contact.modal.email}</label>
-                <input
-                  id="contact-email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  autoComplete="email"
-                  required
-                />
-              </div>
-
-              <div className="contact-form__row">
-                <label htmlFor="contact-subject">{t.contact.modal.subject}</label>
-                <input
-                  id="contact-subject"
-                  name="subject"
-                  type="text"
-                  value={formData.subject}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-
-              <div className="contact-form__row">
-                <label htmlFor="contact-message">{t.contact.modal.message}</label>
-                <textarea
-                  id="contact-message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  rows="6"
-                  required
-                />
-              </div>
-
-              {formMessage && (
-                <p className={`contact-form__status contact-form__status--${formStatus}`}>
-                  {formMessage}
-                </p>
-              )}
-
-              <button
-                type="submit"
-                className="contact-form__submit"
-                disabled={formStatus === 'submitting'}
-              >
-                <span>{formStatus === 'submitting' ? t.contact.modal.sending : t.contact.modal.send}</span>
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
+      <ContactModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </section>
   );
 }

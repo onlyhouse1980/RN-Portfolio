@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import CustomCursor from '../../components/CustomCursor';
+import { ContactModal } from '../../components/Contact';
 import { EpicNavigation } from '../../components/EpicPortfolio';
 import { LanguageProvider, useLang } from '../../lib/i18n';
 
@@ -57,6 +58,7 @@ function ResumeContent() {
   const { lang, t } = useLang();
   const rootRef = useRef(null);
   const [motionEnabled, setMotionEnabled] = useState(true);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   const summaryWords = useMemo(
     () => (t.resume?.summary || '').split(/\s+/).filter(Boolean),
@@ -585,9 +587,13 @@ function ResumeContent() {
               >
                 {t.resume?.download || 'Download PDF'} <span aria-hidden="true">↓</span>
               </a>
-              <a className="button resume-cta__email" href="mailto:onlyhouse@gmail.com">
+              <button
+                type="button"
+                className="button resume-cta__email"
+                onClick={() => setIsContactModalOpen(true)}
+              >
                 {t.contact?.cta} <span aria-hidden="true">↗</span>
-              </a>
+              </button>
             </div>
           </div>
           <div className="depth-5 resume-cta__foreground" data-depth="5" aria-hidden="true">
@@ -601,6 +607,11 @@ function ResumeContent() {
         <span>{t.resume?.title}</span>
         <span>© 2026</span>
       </footer>
+
+      <ContactModal
+        isOpen={isContactModalOpen}
+        onClose={() => setIsContactModalOpen(false)}
+      />
     </div>
   );
 }
