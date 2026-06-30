@@ -361,8 +361,121 @@ function FeaturedProject({ project, index }) {
   );
 }
 
+function ArchiveProjectCard({
+  project,
+  index,
+  isFlipped,
+  setFlippedProjectNum,
+}) {
+  const toggle = () => {
+    setFlippedProjectNum((current) => (current === project.num ? null : project.num));
+  };
+
+  const handlePointerEnter = (event) => {
+    if (event.pointerType === 'mouse') {
+      setFlippedProjectNum(project.num);
+    }
+  };
+
+  const handlePointerLeave = (event) => {
+    if (event.pointerType === 'mouse') {
+      setFlippedProjectNum((current) => (current === project.num ? null : current));
+    }
+  };
+
+  const handleClick = (event) => {
+    if (event.target.closest('a')) return;
+
+    const usesTap = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+    if (usesTap) toggle();
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    event.preventDefault();
+    toggle();
+  };
+
+  const handleBlur = (event) => {
+    if (!event.currentTarget.contains(event.relatedTarget)) {
+      setFlippedProjectNum((current) => (current === project.num ? null : current));
+    }
+  };
+
+  return (
+    <article
+      className={`archive-card${isFlipped ? ' archive-card--flipped' : ''}`}
+      data-archive-card
+      tabIndex={0}
+      role="button"
+      aria-expanded={isFlipped}
+      aria-label={`${isFlipped ? 'Hide' : 'Show'} details for ${project.title.replace('\n', ' ')}`}
+      onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      onBlur={handleBlur}
+    >
+      <div className="archive-card__inner">
+        <div className="archive-card__face archive-card__face--front" aria-hidden={isFlipped}>
+          <div className="archive-card__image">
+            <Image
+              src={project.fallbackImage}
+              alt={`Screenshot of ${project.title.replace('\n', ' ')}`}
+              fill
+              sizes="(max-width: 700px) 92vw, (max-width: 1100px) 46vw, 31vw"
+              loading="lazy"
+            />
+            <span className="archive-card__launch" aria-hidden="true">↻</span>
+          </div>
+          <div className="archive-card__topline">
+            <span>{project.num}</span>
+            <span>{project.year}</span>
+          </div>
+          <h4>
+            {project.title.split('\n').map((line) => <span key={line}>{line}</span>)}
+          </h4>
+          <div className="archive-card__tags">
+            {project.tags.slice(0, 3).map((tag) => <span key={tag}>{tag}</span>)}
+          </div>
+          <span className="archive-card__index" aria-hidden="true">
+            {String(index + 1).padStart(2, '0')}
+          </span>
+        </div>
+
+        <div className="archive-card__face archive-card__face--back" aria-hidden={!isFlipped}>
+          <div className="archive-card__topline">
+            <span>{project.num} / {project.year}</span>
+            <span>Project details</span>
+          </div>
+          <h4>
+            {project.title.split('\n').map((line) => <span key={line}>{line}</span>)}
+          </h4>
+          <p className="archive-card__description">{project.desc}</p>
+          <div className="archive-card__back-footer">
+            <div className="archive-card__tags">
+              {project.tags.slice(0, 3).map((tag) => <span key={tag}>{tag}</span>)}
+            </div>
+            <a
+              className="archive-card__visit"
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              tabIndex={isFlipped ? 0 : -1}
+              onClick={(event) => event.stopPropagation()}
+            >
+              Visit project <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 function Work({ projects }) {
   const { t } = useLang();
+  const [flippedProjectNum, setFlippedProjectNum] = useState(null);
   const featuredProjects = FEATURED_PROJECT_NUMBERS
     .map((number) => projects.find((project) => project.num === number))
     .filter(Boolean);
@@ -406,38 +519,13 @@ function Work({ projects }) {
 
           <div className="project-archive__grid">
             {archiveProjects.map((project, index) => (
-              <a
-                className="archive-card"
-                href={project.link}
-                target="_blank"
-                rel="noopener noreferrer"
+              <ArchiveProjectCard
                 key={project.num}
-                data-archive-card
-              >
-                <div className="archive-card__image">
-                  <Image
-                    src={project.fallbackImage}
-                    alt={`Screenshot of ${project.title.replace('\n', ' ')}`}
-                    fill
-                    sizes="(max-width: 700px) 92vw, (max-width: 1100px) 46vw, 31vw"
-                    loading="lazy"
-                  />
-                  <span className="archive-card__launch" aria-hidden="true">↗</span>
-                </div>
-                <div className="archive-card__topline">
-                  <span>{project.num}</span>
-                  <span>{project.year}</span>
-                </div>
-                <h4>
-                  {project.title.split('\n').map((line) => <span key={line}>{line}</span>)}
-                </h4>
-                <div className="archive-card__tags">
-                  {project.tags.slice(0, 3).map((tag) => <span key={tag}>{tag}</span>)}
-                </div>
-                <span className="archive-card__index" aria-hidden="true">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-              </a>
+                project={project}
+                index={index}
+                isFlipped={flippedProjectNum === project.num}
+                setFlippedProjectNum={setFlippedProjectNum}
+              />
             ))}
           </div>
         </div>

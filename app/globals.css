@@ -3086,11 +3086,61 @@ body:has(.epic-portfolio) {
 
 .archive-card {
   position: relative;
-  display: flex;
+  display: block;
   min-width: 0;
-  flex-direction: column;
   color: var(--paper);
-  text-decoration: none;
+  perspective: 1200px;
+  outline: none;
+}
+
+.archive-card:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 0.65rem;
+}
+
+.archive-card__inner {
+  position: relative;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 650ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.archive-card--flipped .archive-card__inner {
+  transform: rotateY(180deg);
+}
+
+.archive-card__face {
+  min-width: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.archive-card__face--front {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.archive-card__face--back {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  padding: 1.45rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--signal) 32%, var(--line));
+  border-radius: 0.9rem;
+  background:
+    radial-gradient(circle at 88% 10%, rgba(255, 77, 0, 0.13), transparent 13rem),
+    #111116;
+  box-shadow: 0 1.6rem 4rem rgba(0, 0, 0, 0.34);
+  transform: rotateY(180deg);
+}
+
+.archive-card:not(.archive-card--flipped) .archive-card__face--back,
+.archive-card--flipped .archive-card__face--front {
+  pointer-events: none;
 }
 
 .archive-card:nth-child(3n + 2) {
@@ -3194,6 +3244,58 @@ body:has(.epic-portfolio) {
   bottom: -2.2rem;
   color: rgba(245, 242, 234, 0.12);
   font: 400 2.4rem/1 var(--font-display);
+}
+
+.archive-card__description {
+  min-height: 0;
+  margin: 0.15rem 0 1.4rem;
+  padding-right: 0.65rem;
+  overflow-y: auto;
+  color: rgba(245, 242, 234, 0.72);
+  font: 300 0.94rem/1.5 var(--font-condensed);
+  white-space: pre-line;
+  scrollbar-color: var(--signal) rgba(245, 242, 234, 0.1);
+  scrollbar-width: thin;
+}
+
+.archive-card__description::-webkit-scrollbar {
+  width: 0.3rem;
+}
+
+.archive-card__description::-webkit-scrollbar-track {
+  background: rgba(245, 242, 234, 0.1);
+}
+
+.archive-card__description::-webkit-scrollbar-thumb {
+  background: var(--signal);
+}
+
+.archive-card__back-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.archive-card__visit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid currentColor;
+  color: var(--paper);
+  font: 700 0.58rem/1 var(--font-mono);
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.archive-card__visit:hover,
+.archive-card__visit:focus-visible {
+  color: var(--signal);
 }
 
 .project-archive__mark {
@@ -4129,6 +4231,10 @@ body:has(.epic-portfolio) {
     font-size: 2.7rem;
   }
 
+  .archive-card__face--back {
+    padding: 1.2rem;
+  }
+
   .capability-row {
     grid-template-columns: 2rem 1fr;
     gap: 1rem;
@@ -4152,6 +4258,13 @@ body:has(.epic-portfolio) {
 
   .epic-footer {
     padding-inline: 1.2rem;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .archive-card__launch {
+    opacity: 1;
+    transform: none;
   }
 }
 
