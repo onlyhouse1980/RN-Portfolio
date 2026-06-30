@@ -597,8 +597,6 @@ export default function EpicPortfolio() {
       }
 
       animationContext = gsap.context(() => {
-        const compactLayout = window.matchMedia('(max-width: 900px)').matches;
-
         if (liteMode) {
           gsap.set(
             '.hero-title__line, .hero-kicker, .hero-intro, .hero-portrait-frame, .reveal, [data-archive-card]',
@@ -697,21 +695,6 @@ export default function EpicPortfolio() {
 
         const featuredCards = gsap.utils.toArray('.featured-project');
         featuredCards.forEach((card, index) => {
-          if (!compactLayout && index < featuredCards.length - 1) {
-            gsap.to(card.querySelector('.featured-project__stage'), {
-              scale: 0.92,
-              filter: 'brightness(0.48) blur(4px)',
-              opacity: 0.7,
-              ease: 'none',
-              scrollTrigger: {
-                trigger: featuredCards[index + 1],
-                start: 'top bottom',
-                end: 'top top',
-                scrub: true,
-              },
-            });
-          }
-
           const screen = card.querySelector('.featured-project__screen');
           const copy = card.querySelector('.featured-project__copy');
           gsap.from(screen, {
