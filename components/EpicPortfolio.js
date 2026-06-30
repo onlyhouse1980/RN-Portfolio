@@ -7,7 +7,7 @@ import { PROJECTS } from './Projects';
 import Contact from './Contact';
 import CustomCursor from './CustomCursor';
 
-const FEATURED_PROJECT_NUMBERS = ['05', '04', '14'];
+const FEATURED_PROJECT_NUMBERS = ['01', '17', '14'];
 
 const TECH_STACK = [
   'Next.js 16',
@@ -361,6 +361,152 @@ function FeaturedProject({ project, index }) {
   );
 }
 
+function ScrollableProjectDescription({ description, projectTitle }) {
+  const descriptionRef = useRef(null);
+  const trackRef = useRef(null);
+  const thumbRef = useRef(null);
+  const dragRef = useRef(null);
+  const [hasOverflow, setHasOverflow] = useState(false);
+
+  useEffect(() => {
+    const descriptionElement = descriptionRef.current;
+    const trackElement = trackRef.current;
+    const thumbElement = thumbRef.current;
+    if (!descriptionElement || !trackElement || !thumbElement) return undefined;
+
+    const updateScrollbar = () => {
+      const maxScroll = descriptionElement.scrollHeight - descriptionElement.clientHeight;
+      const overflowing = maxScroll > 1;
+      setHasOverflow((current) => (current === overflowing ? current : overflowing));
+
+      if (!overflowing) {
+        thumbElement.style.height = '100%';
+        thumbElement.style.transform = 'translateY(0)';
+        return;
+      }
+
+      const trackHeight = trackElement.clientHeight;
+      const thumbHeight = Math.max(
+        30,
+        trackHeight * (descriptionElement.clientHeight / descriptionElement.scrollHeight),
+      );
+      const scrollRatio = descriptionElement.scrollTop / maxScroll;
+      const thumbOffset = scrollRatio * Math.max(0, trackHeight - thumbHeight);
+
+      thumbElement.style.height = `${thumbHeight}px`;
+      thumbElement.style.transform = `translateY(${thumbOffset}px)`;
+    };
+
+    updateScrollbar();
+    descriptionElement.addEventListener('scroll', updateScrollbar, { passive: true });
+    const resizeObserver = new ResizeObserver(updateScrollbar);
+    resizeObserver.observe(descriptionElement);
+
+    return () => {
+      descriptionElement.removeEventListener('scroll', updateScrollbar);
+      resizeObserver.disconnect();
+    };
+  }, [description]);
+
+  const handleTrackPointerDown = (event) => {
+    const descriptionElement = descriptionRef.current;
+    const trackElement = trackRef.current;
+    const thumbElement = thumbRef.current;
+    if (
+      !descriptionElement
+      || !trackElement
+      || !thumbElement
+      || event.target === thumbElement
+    ) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const trackRect = trackElement.getBoundingClientRect();
+    const thumbHeight = thumbElement.offsetHeight;
+    const targetOffset = Math.max(
+      0,
+      Math.min(trackRect.height - thumbHeight, event.clientY - trackRect.top - thumbHeight / 2),
+    );
+    const maxScroll = descriptionElement.scrollHeight - descriptionElement.clientHeight;
+    const maxThumbOffset = trackRect.height - thumbHeight;
+    descriptionElement.scrollTop = maxThumbOffset > 0
+      ? (targetOffset / maxThumbOffset) * maxScroll
+      : 0;
+  };
+
+  const handleThumbPointerDown = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    dragRef.current = {
+      pointerId: event.pointerId,
+      startY: event.clientY,
+      startScroll: descriptionRef.current?.scrollTop || 0,
+    };
+  };
+
+  const handleThumbPointerMove = (event) => {
+    const drag = dragRef.current;
+    const descriptionElement = descriptionRef.current;
+    const trackElement = trackRef.current;
+    const thumbElement = thumbRef.current;
+    if (
+      !drag
+      || drag.pointerId !== event.pointerId
+      || !descriptionElement
+      || !trackElement
+      || !thumbElement
+    ) return;
+
+    const maxScroll = descriptionElement.scrollHeight - descriptionElement.clientHeight;
+    const maxThumbOffset = trackElement.clientHeight - thumbElement.offsetHeight;
+    if (maxThumbOffset <= 0) return;
+
+    descriptionElement.scrollTop = drag.startScroll
+      + ((event.clientY - drag.startY) / maxThumbOffset) * maxScroll;
+  };
+
+  const handleThumbPointerUp = (event) => {
+    if (dragRef.current?.pointerId !== event.pointerId) return;
+    dragRef.current = null;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+  };
+
+  return (
+    <div
+      className={`archive-card__description-wrap${hasOverflow ? ' has-overflow' : ''}`}
+      onClick={(event) => event.stopPropagation()}
+    >
+      <p
+        className="archive-card__description"
+        ref={descriptionRef}
+        tabIndex={hasOverflow ? 0 : -1}
+        aria-label={hasOverflow ? `${projectTitle} description. Scroll for more.` : undefined}
+      >
+        {description}
+      </p>
+      <div
+        className="archive-card__scrollbar"
+        ref={trackRef}
+        aria-hidden="true"
+        onPointerDown={handleTrackPointerDown}
+      >
+        <div
+          className="archive-card__scrollbar-thumb"
+          ref={thumbRef}
+          onPointerDown={handleThumbPointerDown}
+          onPointerMove={handleThumbPointerMove}
+          onPointerUp={handleThumbPointerUp}
+          onPointerCancel={handleThumbPointerUp}
+        />
+      </div>
+    </div>
+  );
+}
+
 function ArchiveProjectCard({
   project,
   index,
@@ -451,7 +597,10 @@ function ArchiveProjectCard({
           <h4>
             {project.title.split('\n').map((line) => <span key={line}>{line}</span>)}
           </h4>
-          <p className="archive-card__description">{project.desc}</p>
+          <ScrollableProjectDescription
+            description={project.desc}
+            projectTitle={project.title.replace('\n', ' ')}
+          />
           <div className="archive-card__back-footer">
             <div className="archive-card__tags">
               {project.tags.slice(0, 3).map((tag) => <span key={tag}>{tag}</span>)}
