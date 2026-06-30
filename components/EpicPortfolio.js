@@ -269,7 +269,7 @@ function Manifesto() {
             </div>
           ))}
           <div className="manifesto-stat reveal">
-            <strong>16</strong>
+            <strong>{PROJECTS.length}</strong>
             <span>Production-grade case studies</span>
           </div>
         </div>

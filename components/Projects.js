@@ -208,6 +208,16 @@ It also includes an admin dashboard for viewing orders, managing fulfillment, an
     icon: '🌿',
     fallbackImage: '/VPDTracker.png',
   },
+  {
+    num: '17',
+    title: 'Legal Flow',
+    tags: ['OpenAI', 'MongoDB', 'Stripe'],
+    desc: `LegalFlow AI is a multi-tenant SaaS platform that modernizes the client intake process for German law firms. It replaces traditional paper forms and phone tag with a secure, embedded web portal where prospective clients can securely submit their legal issues. Under the hood, it leverages LLMs to instantly analyze the intake data, generating concise case summaries, extracting key facts, and automatically identifying critical legal deadlines. Built with Next.js, MongoDB, and Stripe, the platform ensures strict DSGVO (GDPR) compliance while saving lawyers hours of administrative work each week.`,
+    year: '2026',
+    link: 'https://legal-flow-kappa.vercel.app',
+    icon: '⚖️',
+    fallbackImage: '/legal-flow.png',
+  },
 ];
 // ─────────────────────────────────────────────────────────────────────────────
 
