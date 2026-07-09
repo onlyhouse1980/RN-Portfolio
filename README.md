@@ -39,22 +39,9 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ### Adding Your Projects
 
-Edit `components/Projects.js` — find the `PROJECTS` array at the top:
-
-```js
-export const PROJECTS = [
-  {
-    num: '01',
-    title: 'Your Project\nTitle',      // \n = line break
-    tags: ['Next.js', 'Stripe'],       // tech tags shown on hover
-    desc: 'Short project description.',
-    year: '2024',
-    link: 'https://your-live-url.com', // or '#' if no live link
-    icon: '🎯',                        // emoji shown as bg decoration
-  },
-  // ... more projects
-];
-```
+Projects are stored in MongoDB using the `MONGODB_URI` value from `.env.local`.
+Sign in at `/projects/input` with the admin credentials and use the form to add
+new projects to the `projects` collection.
 
 ### Changing Personal Info
 

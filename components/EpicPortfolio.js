@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useLang } from '../lib/i18n';
-import { PROJECTS } from './Projects';
 import Contact from './Contact';
 import CustomCursor from './CustomCursor';
 
@@ -235,7 +234,7 @@ function Hero() {
   );
 }
 
-function Manifesto() {
+function Manifesto({ projectCount }) {
   const { t } = useLang();
   const words = t.about.text.split(/\s+/);
 
@@ -269,7 +268,7 @@ function Manifesto() {
             </div>
           ))}
           <div className="manifesto-stat reveal">
-            <strong>{PROJECTS.length}</strong>
+            <strong>{projectCount}</strong>
             <span>Production-grade case studies</span>
           </div>
         </div>
@@ -764,13 +763,13 @@ function ClosingStatement() {
   );
 }
 
-export default function EpicPortfolio() {
+export default function EpicPortfolio({ projects = [] }) {
   const rootRef = useRef(null);
   const { t, lang } = useLang();
   const [motionEnabled, setMotionEnabled] = useState(true);
 
   const localizedProjects = useMemo(
-    () => PROJECTS.map((project) => {
+    () => projects.map((project) => {
       const localized = t.projects.items[project.num] || {};
       return {
         ...project,
@@ -778,7 +777,7 @@ export default function EpicPortfolio() {
         desc: localized.desc || project.desc,
       };
     }),
-    [t],
+    [projects, t],
   );
 
   useEffect(() => {
@@ -1011,7 +1010,7 @@ export default function EpicPortfolio() {
 
       <main id="main-content">
         <Hero />
-        <Manifesto />
+        <Manifesto projectCount={localizedProjects.length} />
         <Work projects={localizedProjects} />
         <Capabilities />
         <ClosingStatement />

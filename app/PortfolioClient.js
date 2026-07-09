@@ -9,10 +9,10 @@ import { LanguageProvider } from '../lib/i18n';
  *
  * @returns {JSX.Element} The wrapped PortfolioBody.
  */
-export default function PortfolioClient() {
+export default function PortfolioClient({ projects }) {
   return (
     <LanguageProvider>
-      <EpicPortfolio />
+      <EpicPortfolio projects={projects} />
     </LanguageProvider>
   );
 }
