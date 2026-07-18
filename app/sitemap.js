@@ -1,5 +1,5 @@
 export default function sitemap() {
-  const baseUrl = 'https://ryannyberg.com'; // Update to your actual domain
+  const baseUrl = 'https://ryanernstnyberg.com'; // Update to your actual domain
 
   return [
     {
