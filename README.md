@@ -45,11 +45,11 @@ new projects to the `projects` collection.
 
 ### Changing Personal Info
 
-- **Navbar logo**: `components/Navbar.js` → change "DEV.FOLIO"
-- **Hero subtitle**: `components/Hero.js` → edit the `<p>` tag
-- **About text & stats**: `components/About.js`
-- **Contact links**: `components/Contact.js` → update email, GitHub, LinkedIn
-- **Footer**: `pages/index.js` → update copyright name and social links
+- **Navbar logo**: `components/Navbar.tsx` → change "DEV.FOLIO"
+- **Hero subtitle**: `components/Hero.tsx` → edit the `<p>` tag
+- **About text & stats**: `components/About.tsx`
+- **Contact links**: `components/Contact.tsx` → update email, GitHub, LinkedIn
+- **Footer**: `app/page.tsx` → update copyright name and social links
 
 ### Changing Colors / Fonts
 
@@ -64,11 +64,11 @@ Edit `styles/globals.css` — CSS variables at the top:
 }
 ```
 
-Fonts are loaded in `pages/_document.js` — swap the Google Fonts URL to change typography.
+Fonts are loaded in `app/layout.tsx` — update the Next font imports to change typography.
 
 ### Adding Your Skills
 
-Edit the `SKILLS` and `TECH` arrays in `components/Skills.js`.
+Edit the `SKILLS` and `TECH` arrays in `components/Skills.tsx`.
 
 ---
 
@@ -77,21 +77,21 @@ Edit the `SKILLS` and `TECH` arrays in `components/Skills.js`.
 ```
 portfolio/
 ├── components/
-│   ├── About.js        — About section with word reveal
-│   ├── Contact.js      — Contact section with line reveals
-│   ├── CustomCursor.js — Magnetic custom cursor
-│   ├── Hero.js         — Hero with particle canvas + parallax
-│   ├── Marquee.js      — Scrolling tech ticker
-│   ├── Navbar.js       — Fixed nav with scroll behavior
-│   ├── Projects.js     — Project grid with tilt & entrance anims
-│   └── Skills.js       — Skill bars + tech badge grid
-├── pages/
-│   ├── _app.js
-│   ├── _document.js    — Google Fonts loaded here
-│   └── index.js        — Page layout + Lenis initialization
+│   ├── About.tsx        — About section with word reveal
+│   ├── Contact.tsx      — Contact section with line reveals
+│   ├── CustomCursor.tsx — Magnetic custom cursor
+│   ├── Hero.tsx         — Hero with particle canvas + parallax
+│   ├── Marquee.tsx      — Scrolling tech ticker
+│   ├── Navbar.tsx       — Fixed nav with scroll behavior
+│   ├── Projects.tsx     — Project grid with tilt & entrance anims
+│   └── Skills.tsx       — Skill bars + tech badge grid
+├── app/
+│   ├── layout.tsx       — Global layout, metadata, and fonts
+│   ├── page.tsx         — Page entry point
+│   └── PortfolioClient.tsx
 ├── styles/
 │   └── globals.css     — All styles + CSS variables
-├── next.config.js
+├── next.config.ts
 └── package.json
 ```
 

@@ -1,0 +1,1 @@
+import "./install-language-aware-recruiter-pages.mjs";

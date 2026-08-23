@@ -1,0 +1,33 @@
+{
+  "routes": [
+    "/for/metanoia",
+    "/for/notarpartner",
+    "/for/krisenchat",
+    "/for/wynwood",
+    "/for/fastrocket"
+  ],
+  "projects": [
+    "obcg",
+    "adminpilot",
+    "kanzlei",
+    "erechnungfix",
+    "fine-truth",
+    "launchpad",
+    "can-we-talk"
+  ],
+  "touches": [
+    "app/for",
+    "components/recruiter",
+    "data/recruiter-projects.js",
+    "data/recruiter-targets.js",
+    "public/recruiter"
+  ],
+  "does_not_touch": [
+    "homepage",
+    "layout",
+    "globals.css",
+    "navbar",
+    "existing project components",
+    "package.json dependencies"
+  ]
+}

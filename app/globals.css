@@ -2526,7 +2526,7 @@ body:has(.epic-portfolio) {
 }
 
 .hero-title__line {
-  display: block;
+  display: inline-block;
 }
 
 .hero-title__mask--1 {
@@ -2534,13 +2534,12 @@ body:has(.epic-portfolio) {
 }
 
 .hero-title__mask--2 {
-  padding-right: 1vw;
+  padding-left: 1vw;
   color: var(--signal);
-  text-align: right;
 }
 
 .hero-title__mask--3 {
-  padding-left: 7vw;
+  padding-left: 1vw;
 }
 
 .hero-intro {
@@ -2849,6 +2848,27 @@ body:has(.epic-portfolio) {
   z-index: 3;
 }
 
+.featured-project--4 {
+  --project-bg: #11130f;
+  --project-ink: #f5f2ea;
+  --project-accent: #b4ff00;
+  z-index: 4;
+}
+
+.featured-project--5 {
+  --project-bg: #f1efe6;
+  --project-ink: #101014;
+  --project-accent: #ff3c00;
+  z-index: 5;
+}
+
+.featured-project--6 {
+  --project-bg: #101217;
+  --project-ink: #f5f2ea;
+  --project-accent: #ffcc4d;
+  z-index: 6;
+}
+
 .featured-project__background {
   background:
     radial-gradient(circle at 78% 45%, color-mix(in srgb, var(--project-accent) 17%, transparent), transparent 26rem),
@@ -2981,11 +3001,31 @@ body:has(.epic-portfolio) {
   color: var(--project-accent);
 }
 
-.featured-project__copy > p {
-  max-width: 30rem;
+.featured-project__description {
+  max-width: calc(30rem - 1.25rem);
+  max-height: clamp(8rem, 24vh, 15rem);
+  margin-right: 1.25rem;
   margin-bottom: 2rem;
+  padding-right: 0.9rem;
+  overflow-y: scroll;
+  overscroll-behavior: contain;
   color: color-mix(in srgb, var(--project-ink) 70%, transparent);
   font: 300 clamp(0.96rem, 1.16vw, 1.12rem)/1.55 var(--font-condensed);
+  scrollbar-color: color-mix(in srgb, var(--project-accent) 70%, transparent) color-mix(in srgb, var(--project-ink) 12%, transparent);
+  scrollbar-width: thin;
+  white-space: pre-line;
+}
+
+.featured-project__description::-webkit-scrollbar {
+  width: 0.28rem;
+}
+
+.featured-project__description::-webkit-scrollbar-track {
+  background: color-mix(in srgb, var(--project-ink) 12%, transparent);
+}
+
+.featured-project__description::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--project-accent) 70%, transparent);
 }
 
 .featured-project__meta {
@@ -3973,6 +4013,8 @@ body:has(.epic-portfolio) {
     line-height: 0.73;
   }
 
+  .hero-title__mask--1,
+  .hero-title__mask--2,
   .hero-title__mask--3 {
     padding-left: 0;
   }
@@ -4085,8 +4127,11 @@ body:has(.epic-portfolio) {
     font-size: clamp(3.6rem, 10.5vw, 6.5rem);
   }
 
-  .featured-project__copy > p {
-    display: none;
+  .featured-project__description {
+    display: block;
+    max-height: 8.5rem;
+    margin-bottom: 1.2rem;
+    font-size: 1rem;
   }
 
   .featured-project__meta {
@@ -4202,10 +4247,6 @@ body:has(.epic-portfolio) {
   .hero-title {
     top: 50%;
     font-size: clamp(4.6rem, 24.2vw, 8rem);
-  }
-
-  .hero-title__mask--2 {
-    padding-right: 0;
   }
 
   .button {
@@ -4334,8 +4375,7 @@ body:has(.epic-portfolio) {
 .no-motion .hero-title__line,
 .no-motion .hero-portrait-frame,
 .no-motion .featured-project__stage,
-.no-motion .featured-project__screen,
-.no-motion [data-archive-card] {
+.no-motion .featured-project__screen {
   transform: none !important;
   filter: none !important;
 }
@@ -4362,6 +4402,11 @@ body:has(.epic-portfolio) {
   transform: none !important;
 }
 
+.no-motion .archive-card__inner,
+.no-motion .project-card__inner {
+  transition-duration: 650ms !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -4375,8 +4420,7 @@ body:has(.epic-portfolio) {
   [data-parallax],
   .float-loop,
   .hero-title__line,
-  .featured-project__stage,
-  [data-archive-card] {
+  .featured-project__stage {
     transform: none !important;
     filter: none !important;
   }
@@ -4401,5 +4445,10 @@ body:has(.epic-portfolio) {
 
   .contact__big .line-inner {
     transform: none !important;
+  }
+
+  .archive-card__inner,
+  .project-card__inner {
+    transition-duration: 650ms !important;
   }
 }
